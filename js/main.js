@@ -17,14 +17,6 @@ var DESCRIPTIONS = [
 var PIN_Y_MIN = 130;
 var PIN_Y_MAX = 630;
 var OFFERS_AMOUNT = 8;
-var avatars = [];
-
-// Генерируем пути к аватарам
-var generateAvatars = function (amount) {
-  for (var avatarIndex = 0; avatarIndex < amount; avatarIndex++) {
-    avatars[avatarIndex] = 'img/avatars/user0' + (avatarIndex + 1) + '.png';
-  }
-};
 
 // Получаем случайное количество фото
 var getPhotos = function (min, max) {
@@ -41,7 +33,7 @@ var generateOffers = function (amount) {
 
   for (var offersIndex = 0; offersIndex < amount; offersIndex++) {
     var author = {};
-    author.avatar = avatars[offersIndex];
+    author.avatar = 'img/avatars/user0' + (offersIndex + 1) + '.png';
 
     var location = {};
     location.x = Math.floor(Math.random() * 1100);
@@ -100,6 +92,5 @@ var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pi
 
 document.querySelector('.map').classList.remove('map--faded');
 
-generateAvatars(OFFERS_AMOUNT);
 var offers = generateOffers(OFFERS_AMOUNT);
 map.appendChild(setPins(offers));
