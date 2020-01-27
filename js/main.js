@@ -1,6 +1,6 @@
 'use strict';
 
-var TITLES = ['Объявление', 'Сдается', 'Сдам квартиру', 'Недорого', 'Сдам недорого', 'Во временное пользование'];
+var TITLES = ['Хостел Like Home', 'Маэстро Хостел', 'Сдам квартиру', 'Бабушка Хаус', 'Сдам недорого', 'Отель Звездный'];
 var TYPES = ['palace', 'flat', 'house'];
 var CHECKTIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -20,9 +20,9 @@ var OFFERS_AMOUNT = 8;
 var avatars = [];
 
 // Генерируем пути к аватарам
-var generateAvatars = function () {
-  for (var i = 0; i < OFFERS_AMOUNT; i++) {
-    avatars[i] = 'img/avatars/user0' + (i + 1) + '.png';
+var generateAvatars = function (amount) {
+  for (var avatarIndex = 0; avatarIndex < amount; avatarIndex++) {
+    avatars[avatarIndex] = 'img/avatars/user0' + (avatarIndex + 1) + '.png';
   }
 };
 
@@ -37,11 +37,11 @@ var getPhotos = function (min, max) {
 
 // Генерируем предложения
 var generateOffers = function (amount) {
-  var offers = [];
+  var generatedOffers = [];
 
-  for (var i = 0; i < amount; i++) {
+  for (var offersIndex = 0; offersIndex < amount; offersIndex++) {
     var author = {};
-    author.avatar = avatars[i];
+    author.avatar = avatars[offersIndex];
 
     var location = {};
     location.x = Math.floor(Math.random() * 1100);
@@ -65,13 +65,41 @@ var generateOffers = function (amount) {
     blank.offer = offer;
     blank.location = location;
 
-    offers[i] = blank;
+    generatedOffers[offersIndex] = blank;
   }
 
-  return offers;
+  return generatedOffers;
 };
 
+// Создаем метку
+var createPin = function (blank) {
+  var pin = pinTemplate.cloneNode(true);
+  var pinImage = pin.querySelector('img');
 
-generateAvatars();
-var offers = generateOffers(OFFERS_AMOUNT);
+  pin.style.top = (blank.location.y - pin.style.height) + 'px';
+  pin.style.left = (blank.location.x - pin.style.width / 2) + 'px';
+  pinImage.src = blank.author.avatar;
+  pinImage.alt = blank.offer.title;
+
+  return pin;
+};
+
+// Наполняем фрагмент метками
+var setPins = function (blanks) {
+  var mapPins = document.createDocumentFragment();
+
+  for (var pinIndex = 0; pinIndex < blanks.length; pinIndex++) {
+    mapPins.appendChild(createPin(blanks[pinIndex]));
+  }
+
+  return mapPins;
+};
+
+var map = document.querySelector('.map__pins');
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
 document.querySelector('.map').classList.remove('map--faded');
+
+generateAvatars(OFFERS_AMOUNT);
+var offers = generateOffers(OFFERS_AMOUNT);
+map.appendChild(setPins(offers));
