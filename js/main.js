@@ -29,38 +29,37 @@ var getPhotos = function (min, max) {
 
 // Генерируем предложения
 var generateOffers = function (amount) {
-  var generatedOffers = [];
+  var offers = [];
 
   for (var offersIndex = 0; offersIndex < amount; offersIndex++) {
-    var author = {};
-    author.avatar = 'img/avatars/user0' + (offersIndex + 1) + '.png';
+    var xCoord = Math.floor(Math.random() * 1100);
+    var yCoord = Math.floor(Math.random() * (PIN_Y_MAX - PIN_Y_MIN) + PIN_Y_MIN);
 
-    var location = {};
-    location.x = Math.floor(Math.random() * 1100);
-    location.y = Math.floor(Math.random() * (PIN_Y_MAX - PIN_Y_MIN) + PIN_Y_MIN);
-
-    var offer = {};
-    offer.title = TITLES[Math.floor(Math.random() * TITLES.length)];
-    offer.address = location.x + ', ' + location.y;
-    offer.price = Math.floor(Math.random() * 10000);
-    offer.type = TYPES[Math.floor(Math.random() * TYPES.length)];
-    offer.rooms = Math.floor(Math.random() * 2 + 1);
-    offer.guests = Math.floor(Math.random() * 4 + 1);
-    offer.checkin = CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)];
-    offer.checkout = CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)];
-    offer.features = FEATURES[Math.floor(Math.random() * FEATURES.length)];
-    offer.description = DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)];
-    offer.photos = getPhotos(1, 3);
-
-    var blank = {};
-    blank.author = author;
-    blank.offer = offer;
-    blank.location = location;
-
-    generatedOffers[offersIndex] = blank;
+    offers[offersIndex] = {
+      author: {
+        avatar: 'img/avatars/user0' + (offersIndex + 1) + '.png'
+      },
+      location: {
+        x: xCoord,
+        y: yCoord
+      },
+      offer: {
+        title: TITLES[Math.floor(Math.random() * TITLES.length)],
+        address: xCoord + ', ' + yCoord,
+        price: Math.floor(Math.random() * 10000),
+        type: TYPES[Math.floor(Math.random() * TYPES.length)],
+        rooms: Math.floor(Math.random() * 2 + 1),
+        guests: Math.floor(Math.random() * 4 + 1),
+        checkin: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
+        checkout: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
+        features: FEATURES[Math.floor(Math.random() * FEATURES.length)],
+        description: DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)],
+        photos: getPhotos(1, 3)
+      }
+    };
   }
 
-  return generatedOffers;
+  return offers;
 };
 
 // Создаем метку
