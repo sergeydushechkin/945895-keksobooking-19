@@ -27,6 +27,15 @@ var getPhotos = function (min, max) {
   return photos;
 };
 
+// Получаем случайное количество удобств
+var getFeatures = function (min, max) {
+  var features = [];
+  for (var featuresNum = 0; featuresNum < Math.floor(Math.random() * (max - min) + min); featuresNum++) {
+    features[featuresNum] = FEATURES[Math.floor(Math.random() * FEATURES.length)];
+  }
+  return features;
+};
+
 // Генерируем предложения
 var generateOffers = function (amount) {
   var offers = [];
@@ -52,7 +61,7 @@ var generateOffers = function (amount) {
         guests: Math.floor(Math.random() * 4 + 1),
         checkin: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
         checkout: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
-        features: FEATURES[Math.floor(Math.random() * FEATURES.length)],
+        features: getFeatures(1, 3),
         description: DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)],
         photos: getPhotos(1, 3)
       }
