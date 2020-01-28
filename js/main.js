@@ -1,7 +1,7 @@
 'use strict';
 
 var TITLES = ['Хостел Like Home', 'Маэстро Хостел', 'Сдам квартиру', 'Бабушка Хаус', 'Сдам недорого', 'Отель Звездный'];
-var TYPES = ['palace', 'flat', 'house'];
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKTIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
@@ -61,7 +61,7 @@ var generateOffers = function (amount) {
         guests: Math.floor(Math.random() * 4 + 1),
         checkin: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
         checkout: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
-        features: getFeatures(1, 3),
+        features: getFeatures(2, 4),
         description: DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)],
         photos: getPhotos(1, 3)
       }
@@ -95,10 +95,93 @@ var setPins = function (blanks) {
   return mapPins;
 };
 
+// Заполняем поля карты, если пусто то прячем
+var fillCardField = function (parent, childClass, string) {
+  var child = parent.querySelector(childClass);
+
+  if (string) {
+    child.textContent = string;
+  } else {
+    child.style.display = 'none';
+  }
+
+  return;
+};
+
+// Получаем читабельные варианты типа жилья
+var getHousingType = function (type) {
+  if (type === 'flat') {
+    return 'Квартира';
+  }
+  if (type === 'bungalo') {
+    return 'Бунгало';
+  }
+  if (type === 'house') {
+    return 'Дом';
+  }
+  if (type === 'palace') {
+    return 'Дворец';
+  }
+
+  return null;
+};
+
+// Ищем неиспользованные удобства
+var findUnusedFeatures = function (cardFeatures) {
+  var unusedFeatures = [];
+
+  for (var i = 0; i < FEATURES.length; i++) {
+    var finded = false;
+    for (var j = 0; j < cardFeatures.length; j++) {
+      if (FEATURES[i] === cardFeatures[j]) {
+        finded = true;
+        break;
+      }
+    }
+    if (!finded) {
+      unusedFeatures.push(FEATURES[i]);
+    }
+  }
+
+  return unusedFeatures;
+};
+
+// Заполняем список удобств
+var fillCardFeatures = function (popupFeatures, cardFeatures) {
+  var unusedFeatures = findUnusedFeatures(cardFeatures);
+  for (var unusedIndex = 0; unusedIndex < unusedFeatures.length; unusedIndex++) {
+    var string = 'popup__feature--' + unusedFeatures[unusedIndex];
+    var child = popupFeatures.querySelector(string);
+    popupFeatures.removeChild(child);
+  }
+};
+
+// Создаем карточку объявления
+var makeCard = function (cardData) {
+  var card = mapCardTemplate.cloneNode(true);
+
+  fillCardField(card, '.popup__title', cardData.offer.title);
+  fillCardField(card, '.popup__text--address', cardData.offer.address);
+  fillCardField(card, '.popup__text--price', cardData.offer.price + '₽/ночь');
+  fillCardField(card, '.popup__text--capacity', cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей');
+  fillCardField(card, '.popup__text--time', 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout);
+  fillCardField(card, '.popup__description', cardData.offer.description);
+  fillCardField(card, '.popup__avatar', cardData.author.avatar);
+  fillCardField(card, '.popup__type', getHousingType(cardData.offer.type));
+
+  fillCardFeatures(card.querySelector('.popup__features'), cardData.offer.features);
+  // card.querySelector('.popup__features').textContent = getCard;
+  // card.querySelector('.popup__photos').appendChild(makeCardPhotos(cardData.offer.photos));
+
+  return card;
+};
+
 var map = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 document.querySelector('.map').classList.remove('map--faded');
 
 var offers = generateOffers(OFFERS_AMOUNT);
 map.appendChild(setPins(offers));
+map.insertBefore(makeCard(offers[0]), map.querySelector('.map__filters-container'));
