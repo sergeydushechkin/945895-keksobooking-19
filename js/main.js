@@ -160,6 +160,32 @@ var fillCardFeatures = function (popupFeatures, cardFeatures) {
   }
 };
 
+// Создаем теги с фото
+var createPhotoTag = function (tagTemplate, photo) {
+  var tag = tagTemplate.cloneNode();
+  tag.src = photo;
+  return tag;
+};
+
+// Добавляем фотографии к карточке
+var addCardPhotos = function (popupPhotos, offerPhotos) {
+  if (!offerPhotos) {
+    popupPhotos.style.display = 'none';
+    return;
+  }
+
+  var photoTemplate = popupPhotos.querySelector('.popup__photo');
+  var photosFragment = document.createDocumentFragment();
+
+  for (var photoNum = 0; photoNum < offerPhotos.length; photoNum++) {
+    photosFragment.appendChild(createPhotoTag(photoTemplate, offerPhotos[photoNum]));
+  }
+
+  // Удаляем пустой шаблонный тег и добавляем сгенерированные
+  popupPhotos.removeChild(photoTemplate);
+  popupPhotos.appendChild(photosFragment);
+};
+
 // Создаем карточку объявления
 var makeCard = function (cardData) {
   var card = mapCardTemplate.cloneNode(true);
