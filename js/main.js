@@ -126,7 +126,7 @@ var getHousingType = function (type) {
   return null;
 };
 
-// Ищем неиспользованные удобства
+// Ищем удобства которые не перечислены в списке предложения, для удаления из DOM
 var findUnusedFeatures = function (cardFeatures) {
   var unusedFeatures = [];
 
@@ -148,10 +148,14 @@ var findUnusedFeatures = function (cardFeatures) {
 
 // Заполняем список удобств
 var fillCardFeatures = function (popupFeatures, cardFeatures) {
+  if (!cardFeatures) {
+    popupFeatures.style.display = 'none';
+    return;
+  }
+
   var unusedFeatures = findUnusedFeatures(cardFeatures);
   for (var unusedIndex = 0; unusedIndex < unusedFeatures.length; unusedIndex++) {
-    var string = 'popup__feature--' + unusedFeatures[unusedIndex];
-    var child = popupFeatures.querySelector(string);
+    var child = popupFeatures.querySelector('.popup__feature--' + unusedFeatures[unusedIndex]);
     popupFeatures.removeChild(child);
   }
 };
