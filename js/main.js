@@ -32,24 +32,6 @@ var mixArray = function (array) {
   return mixedArray;
 };
 
-// Получаем случайное количество фото
-var getPhotos = function (min, max) {
-  var photos = [];
-  for (var photoNum = 0; photoNum < Math.floor(Math.random() * (max - min) + min); photoNum++) {
-    photos[photoNum] = PHOTOS[Math.floor(Math.random() * PHOTOS.length)];
-  }
-  return photos;
-};
-
-// Получаем случайное количество удобств
-var getFeatures = function (min, max) {
-  var features = [];
-  for (var featuresNum = 0; featuresNum < Math.floor(Math.random() * (max - min) + min); featuresNum++) {
-    features[featuresNum] = FEATURES[Math.floor(Math.random() * FEATURES.length)];
-  }
-  return features;
-};
-
 // Получить случайное количество, случайных элементов из массива
 var getElements = function (array, min, max) {
   var elements = [];
@@ -85,9 +67,9 @@ var generateOffers = function (amount) {
         guests: Math.floor(Math.random() * 4 + 1),
         checkin: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
         checkout: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
-        features: getFeatures(3, 5),
+        features: getElements(FEATURES, 3, 5), // getFeatures(3, 5),
         description: DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)],
-        photos: getPhotos(1, 3)
+        photos: getElements(PHOTOS, 1, 3) // getPhotos(1, 3)
       }
     };
   }
