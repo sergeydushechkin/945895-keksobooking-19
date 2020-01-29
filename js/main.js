@@ -67,9 +67,9 @@ var generateOffers = function (amount) {
         guests: Math.floor(Math.random() * 4 + 1),
         checkin: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
         checkout: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
-        features: getElements(FEATURES, 3, 5), // getFeatures(3, 5),
+        features: getElements(FEATURES, 3, 5),
         description: DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)],
-        photos: getElements(PHOTOS, 1, 3) // getPhotos(1, 3)
+        photos: getElements(PHOTOS, 1, 3)
       }
     };
   }
