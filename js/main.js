@@ -50,6 +50,16 @@ var getFeatures = function (min, max) {
   return features;
 };
 
+// Получить случайное количество, случайных элементов из массива
+var getElements = function (array, min, max) {
+  var elements = [];
+  var mixedElements = mixArray(array);
+  for (var elementNum = 0; elementNum < Math.floor(Math.random() * (max - min) + min); elementNum++) {
+    elements[elementNum] = mixedElements[elementNum];
+  }
+  return elements;
+};
+
 // Генерируем предложения
 var generateOffers = function (amount) {
   var offers = [];
