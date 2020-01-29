@@ -193,15 +193,14 @@ var makeCard = function (cardData) {
   fillCardField(card, '.popup__title', cardData.offer.title);
   fillCardField(card, '.popup__text--address', cardData.offer.address);
   fillCardField(card, '.popup__text--price', cardData.offer.price + '₽/ночь');
+  fillCardField(card, '.popup__type', getHousingType(cardData.offer.type));
   fillCardField(card, '.popup__text--capacity', cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей');
   fillCardField(card, '.popup__text--time', 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout);
   fillCardField(card, '.popup__description', cardData.offer.description);
   fillCardField(card, '.popup__avatar', cardData.author.avatar);
-  fillCardField(card, '.popup__type', getHousingType(cardData.offer.type));
 
   fillCardFeatures(card.querySelector('.popup__features'), cardData.offer.features);
-  // card.querySelector('.popup__features').textContent = getCard;
-  // card.querySelector('.popup__photos').appendChild(makeCardPhotos(cardData.offer.photos));
+  addCardPhotos(card.querySelector('.popup__photos'), cardData.offer.photos);
 
   return card;
 };
