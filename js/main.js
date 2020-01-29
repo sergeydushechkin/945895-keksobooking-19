@@ -6,8 +6,8 @@ var CHECKTIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var DESCRIPTIONS = [
-  'Апартаменты с внутренним двориком и бесплатным Wi-Fi, расположены в 7 км от собора.',
-  'Апартаменты с видом на город и Wi-Fi расположены в Центральном районе , всего в 600 метрах от музея и в 1,1 км от сада.',
+  'Апартаменты с внутренним двориком и бесплатным Wi-Fi, расположены в 7 км от башни.',
+  'Апартаменты с видом на город расположены в Центральном районе, всего в 600 метрах от музея и в 1,1 км от сада.',
   'Дом для отпуска состоит из спален, гостиной, полностью оборудованной кухни с микроволновой печью и чайником, а также ванной комнаты с душем и феном',
   'К услугам гостей круглосуточная стойка регистрации, общая кухня, общий лаундж, прачечная и автомат по продаже напитков и закусок.',
   'Отличный выбор, если вам интересны парки, прогулки у реки и атмосфера.',
@@ -61,7 +61,7 @@ var generateOffers = function (amount) {
         guests: Math.floor(Math.random() * 4 + 1),
         checkin: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
         checkout: CHECKTIME[Math.floor(Math.random() * CHECKTIME.length)],
-        features: getFeatures(2, 4),
+        features: getFeatures(3, 5),
         description: DESCRIPTIONS[Math.floor(Math.random() * DESCRIPTIONS.length)],
         photos: getPhotos(1, 3)
       }
