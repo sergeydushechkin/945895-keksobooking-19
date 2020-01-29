@@ -18,6 +18,20 @@ var PIN_Y_MIN = 130;
 var PIN_Y_MAX = 630;
 var OFFERS_AMOUNT = 8;
 
+// Перемешивает значения массива для случайной выборки
+var mixArray = function (array) {
+  var mixedArray = array.slice();
+  for (var i = 0; i < mixedArray.length; i++) {
+    var swapIndex = Math.floor(Math.random() * mixedArray.length);
+    var value = mixedArray[swapIndex];
+
+    mixedArray[swapIndex] = mixedArray[i];
+    mixedArray[i] = value;
+  }
+
+  return mixedArray;
+};
+
 // Получаем случайное количество фото
 var getPhotos = function (min, max) {
   var photos = [];
