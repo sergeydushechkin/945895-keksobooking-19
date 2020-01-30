@@ -101,36 +101,6 @@ var setPins = function (blanks) {
   return mapPins;
 };
 
-// Заполняем поля карты, если пусто то прячем
-var fillCardField = function (parent, childClass, string) {
-  var child = parent.querySelector(childClass);
-
-  if (string) {
-    child.textContent = string;
-  } else {
-    child.style.display = 'none';
-  }
-
-  return;
-};
-
-// Получаем читабельные варианты типа жилья
-var getHousingType = function (type) {
-  if (type === 'flat') {
-    return 'Квартира';
-  }
-  if (type === 'bungalo') {
-    return 'Бунгало';
-  }
-  if (type === 'house') {
-    return 'Дом';
-  }
-  if (type === 'palace') {
-    return 'Дворец';
-  }
-
-  return null;
-};
 
 // Ищем удобства которые не перечислены в списке предложения, для удаления из DOM
 var findUnusedFeatures = function (cardFeatures) {
@@ -195,15 +165,16 @@ var addCardPhotos = function (popupPhotos, offerPhotos) {
 // Создаем карточку объявления
 var makeCard = function (cardData) {
   var card = mapCardTemplate.cloneNode(true);
+  var housingTypes = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
-  fillCardField(card, '.popup__title', cardData.offer.title);
-  fillCardField(card, '.popup__text--address', cardData.offer.address);
-  fillCardField(card, '.popup__text--price', cardData.offer.price + '₽/ночь');
-  fillCardField(card, '.popup__type', getHousingType(cardData.offer.type));
-  fillCardField(card, '.popup__text--capacity', cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей');
-  fillCardField(card, '.popup__text--time', 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout);
-  fillCardField(card, '.popup__description', cardData.offer.description);
-  fillCardField(card, '.popup__avatar', cardData.author.avatar);
+  card.querySelector('.popup__title').textContent = cardData.offer.title;
+  card.querySelector('.popup__text--address').textContent = cardData.offer.address;
+  card.querySelector('.popup__text--price').textContent = cardData.offer.price + '₽/ночь';
+  card.querySelector('.popup__type').textContent = housingTypes[cardData.offer.type];
+  card.querySelector('.popup__text--capacity').textContent = cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей';
+  card.querySelector('.popup__text--time').textContent = 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout;
+  card.querySelector('.popup__description').textContent = cardData.offer.description;
+  card.querySelector('.popup__avatar').textContent = cardData.author.avatar;
 
   fillCardFeatures(card.querySelector('.popup__features'), cardData.offer.features);
   addCardPhotos(card.querySelector('.popup__photos'), cardData.offer.photos);
