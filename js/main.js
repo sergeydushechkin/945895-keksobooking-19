@@ -101,65 +101,37 @@ var setPins = function (blanks) {
   return mapPins;
 };
 
-
-// Ищем удобства которые не перечислены в списке предложения, для удаления из DOM
-var findUnusedFeatures = function (cardFeatures) {
-  var unusedFeatures = [];
-
-  for (var i = 0; i < FEATURES.length; i++) {
-    var finded = false;
-    for (var j = 0; j < cardFeatures.length; j++) {
-      if (FEATURES[i] === cardFeatures[j]) {
-        finded = true;
-        break;
-      }
-    }
-    if (!finded) {
-      unusedFeatures.push(FEATURES[i]);
-    }
+// Делаем список удобств карточки
+var renderCardFeatures = function (cardFeatures) {
+  var featuresFragment = document.createDocumentFragment();
+  for (var featuresIndex = 0; featuresIndex < cardFeatures.length; featuresIndex++) {
+    var child = document.createElement('li');
+    child.classList.add('popup__feature');
+    child.classList.add('popup__feature--' + cardFeatures[featuresIndex]);
+    featuresFragment.appendChild(child);
   }
-
-  return unusedFeatures;
+  return featuresFragment;
 };
 
-// Заполняем список удобств
-var fillCardFeatures = function (popupFeatures, cardFeatures) {
-  if (!cardFeatures) {
-    popupFeatures.style.display = 'none';
-    return;
-  }
-
-  var unusedFeatures = findUnusedFeatures(cardFeatures);
-  for (var unusedIndex = 0; unusedIndex < unusedFeatures.length; unusedIndex++) {
-    var child = popupFeatures.querySelector('.popup__feature--' + unusedFeatures[unusedIndex]);
-    popupFeatures.removeChild(child);
-  }
-};
-
-// Создаем теги с фото
-var createPhotoTag = function (tagTemplate, photo) {
-  var tag = tagTemplate.cloneNode();
-  tag.src = photo;
-  return tag;
-};
-
-// Добавляем фотографии к карточке
-var addCardPhotos = function (popupPhotos, offerPhotos) {
-  if (!offerPhotos) {
-    popupPhotos.style.display = 'none';
-    return;
-  }
-
-  var photoTemplate = popupPhotos.querySelector('.popup__photo');
+// Делаем список фотографик карточки
+var renderCardPhotos = function (offerPhotos) {
   var photosFragment = document.createDocumentFragment();
-
   for (var photoNum = 0; photoNum < offerPhotos.length; photoNum++) {
-    photosFragment.appendChild(createPhotoTag(photoTemplate, offerPhotos[photoNum]));
+    var child = document.createElement('img');
+    child.classList.add('popup__photo');
+    child.src = offerPhotos[photoNum];
+    child.alt = 'Фотография жилья';
+    child.width = '45';
+    child.height = '40';
+    photosFragment.appendChild(child);
   }
+  return photosFragment;
+};
 
-  // Удаляем пустой шаблонный тег и добавляем сгенерированные
-  popupPhotos.removeChild(photoTemplate);
-  popupPhotos.appendChild(photosFragment);
+// Очищаем и заполняем указанными элементами
+var fillCardElements = function (popupParent, childs) {
+  popupParent.innerHTML = '';
+  popupParent.appendChild(childs);
 };
 
 // Создаем карточку объявления
@@ -176,8 +148,8 @@ var makeCard = function (cardData) {
   card.querySelector('.popup__description').textContent = cardData.offer.description;
   card.querySelector('.popup__avatar').textContent = cardData.author.avatar;
 
-  fillCardFeatures(card.querySelector('.popup__features'), cardData.offer.features);
-  addCardPhotos(card.querySelector('.popup__photos'), cardData.offer.photos);
+  fillCardElements(card.querySelector('.popup__features'), renderCardFeatures(cardData.offer.features));
+  fillCardElements(card.querySelector('.popup__photos'), renderCardPhotos(cardData.offer.photos));
 
   return card;
 };
