@@ -227,6 +227,48 @@ var setAddressField = function () {
   }
 };
 
+// Валидация полей с комнатами и гостями
+var validateCapacity = function () {
+  var rooms = parseInt(selectRoomNumber.value, 10);
+  var capacity = parseInt(selectRoomCapacity.value, 10);
+  var validityMessage = '';
+
+  if (rooms === 1 && capacity !== 1) {
+    validityMessage = 'В 1-ой комнате может быть только 1 гость';
+  } else if (rooms === 2 && (capacity < 1 || capacity > 2)) {
+    validityMessage = 'В 2-х комнатах может от 1 до 2-х гостей';
+  } else if (rooms === 3 && (capacity < 1 || capacity > 3)) {
+    validityMessage = 'В 3-х комнатах может быть от 1 до 3-х гостей';
+  } else if (rooms === 100 && capacity !== 0) {
+    validityMessage = 'В 100 комнатах не может быть гостей';
+  }
+
+  if (validityMessage) {
+    selectRoomCapacity.classList.add('ad-form__error');
+  } else {
+    selectRoomCapacity.classList.remove('ad-form__error');
+  }
+
+  selectRoomCapacity.setCustomValidity(validityMessage);
+};
+
+/* -------------------------Обработчики------------------------- */
+
+// Изменение количества гостей
+var onSelectCapacityChange = function () {
+  validateCapacity();
+};
+
+// Изменение количества комнат
+var onSelectRoomChange = function () {
+  validateCapacity();
+};
+
+// Клике по кнопке отправить
+var onAdFormSubmitClick = function () {
+  validateCapacity();
+};
+
 /* -------------------------Основной код------------------------- */
 var map = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -237,6 +279,10 @@ var mainPin = document.querySelector('.map__pin--main');
 var mapFilterForm = document.querySelector('.map__filters');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = adForm.querySelectorAll('fieldset');
+var adFormSubmit = adForm.querySelector('.ad-form__submit');
+
+var selectRoomNumber = adForm.querySelector('#room_number');
+var selectRoomCapacity = adForm.querySelector('#capacity');
 
 // Для проверки состояния страницы
 var pageActive = false;
