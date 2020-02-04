@@ -154,11 +154,54 @@ var makeCard = function (cardData) {
   return card;
 };
 
+// Переключить состояние набору элементов
+var setElementsState = function (elements, state) {
+  for (var elementIndex = 0; elementIndex < elements.length; elementIndex++) {
+    elements[elementIndex].disabled = state;
+  }
+};
+
+// Изменяет состояние формы объявления, true - выключить, false - включить
+var setAdFormDisabled = function (state) {
+  if (state) {
+    adForm.classList.add('ad-form--disabled');
+  } else {
+    adForm.classList.remove('ad-form--disabled');
+  }
+  setElementsState(adFormFieldsets, state);
+};
+
+// Изменяет состояние формы фильтра
+var setMapFilterDisabled = function (state) {
+  var filterSelects = mapFilterForm.querySelectorAll('select');
+
+  mapFilterForm.querySelector('.map__features').disabled = state;
+  setElementsState(filterSelects, state);
+};
+
+// Деактивирует страницу
+var deactivatePage = function () {
+  setAdFormDisabled(true);
+  setMapFilterDisabled(true);
+  pageActive = false;
+  adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
+  selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
+  selectRoomNumber.removeEventListener('change', onSelectRoomChange);
+};
+
+/* -------------------------Основной код------------------------- */
 var map = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
-document.querySelector('.map').classList.remove('map--faded');
+var mainPin = document.querySelector('.map__pin--main');
+
+var mapFilterForm = document.querySelector('.map__filters');
+var adForm = document.querySelector('.ad-form');
+var adFormFieldsets = adForm.querySelectorAll('fieldset');
+
+// Для проверки состояния страницы
+var pageActive = false;
 
 var offers = generateOffers(OFFERS_AMOUNT);
 map.appendChild(setPins(offers));
