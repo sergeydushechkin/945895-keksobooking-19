@@ -18,6 +18,15 @@ var PIN_Y_MIN = 130;
 var PIN_Y_MAX = 630;
 var OFFERS_AMOUNT = 8;
 
+var MAIN_PIN_INACTIVE_RADIUS = 32;
+var MAIN_PIN_WIDTH = 64;
+var MAIN_PIN_HEIGHT = 80;
+
+var DEBUG = false;
+
+// var ESC_KEY = 'Escape';
+var ENTER_KEY = 'Enter';
+
 // Перемешивает значения массива для случайной выборки
 var mixArray = function (array) {
   var mixedArray = array.slice();
@@ -189,6 +198,35 @@ var deactivatePage = function () {
   selectRoomNumber.removeEventListener('change', onSelectRoomChange);
 };
 
+// Активирует страницу
+var activatePage = function () {
+  var offers = generateOffers(OFFERS_AMOUNT);
+
+  map.appendChild(setPins(offers));
+  // Временный и бесполезный if, убирает отрисовку карточки, т.к. если просто закомментить, то линтер будет ругаться на makeCard и т.д.
+  if (DEBUG) {
+    map.insertBefore(makeCard(offers[0]), map.querySelector('.map__filters-container'));
+  }
+  document.querySelector('.map').classList.remove('map--faded');
+  setAdFormDisabled(false);
+  setMapFilterDisabled(false);
+
+  adFormSubmit.addEventListener('click', onAdFormSubmitClick);
+  selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
+  selectRoomNumber.addEventListener('change', onSelectRoomChange);
+  pageActive = true;
+};
+
+// Заполняет поле адреса
+var setAddressField = function () {
+  var addressField = adForm.querySelector('#address');
+  if (pageActive) {
+    addressField.value = (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT);
+  } else {
+    addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
+  }
+};
+
 /* -------------------------Основной код------------------------- */
 var map = document.querySelector('.map__pins');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
@@ -203,6 +241,21 @@ var adFormFieldsets = adForm.querySelectorAll('fieldset');
 // Для проверки состояния страницы
 var pageActive = false;
 
-var offers = generateOffers(OFFERS_AMOUNT);
-map.appendChild(setPins(offers));
-map.insertBefore(makeCard(offers[0]), map.querySelector('.map__filters-container'));
+deactivatePage();
+setAddressField();
+
+mainPin.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY && !pageActive) {
+    activatePage();
+  }
+});
+
+mainPin.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    if (!pageActive) {
+      activatePage();
+    }
+
+    setAddressField();
+  }
+});
