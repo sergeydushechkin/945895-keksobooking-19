@@ -23,7 +23,7 @@ var MAIN_PIN_INACTIVE_RADIUS = 32;
 var MAIN_PIN_WIDTH = 64;
 var MAIN_PIN_HEIGHT = 80;
 
-// var ESC_KEY = 'Escape';
+var ESC_KEY = 'Escape';
 var ENTER_KEY = 'Enter';
 
 /* -------------------------Переменные------------------------- */
@@ -44,7 +44,7 @@ var selectRoomCapacity = adForm.querySelector('#capacity');
 
 // Для проверки состояния страницы
 var pageActive = false;
-
+var currentCard;
 /* -------------------------Функции------------------------- */
 
 // Перемешивает значения массива для случайной выборки
@@ -183,6 +183,15 @@ var makeCard = function (cardData) {
   return card;
 };
 
+// Закрытие карты
+var closeCard = function () {
+  if (currentCard) {
+    currentCard.removeEventListener('click', onCardCloseClick);
+    currentCard.parentElement.removeChild(currentCard);
+    currentCard = undefined;
+  }
+};
+
 // Переключить состояние набору элементов
 var setElementsState = function (elements, state) {
   for (var elementIndex = 0; elementIndex < elements.length; elementIndex++) {
@@ -212,19 +221,23 @@ var setMapFilterDisabled = function (state) {
 var deactivatePage = function () {
   setAdFormDisabled(true);
   setMapFilterDisabled(true);
-  pageActive = false;
+  closeCard();
+
   adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
   selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
   selectRoomNumber.removeEventListener('change', onSelectRoomChange);
+  document.removeEventListener('keydown', onEscKeydown);
+  pageActive = false;
 };
 
 // Активирует страницу
 var activatePage = function () {
   var offers = generateOffers(OFFERS_AMOUNT);
+  currentCard = makeCard(offers[0]);
 
   map.appendChild(setPins(offers));
 
-  map.insertBefore(makeCard(offers[0]), map.querySelector('.map__filters-container'));
+  map.insertBefore(currentCard, map.querySelector('.map__filters-container'));
   document.querySelector('.map').classList.remove('map--faded');
   setAdFormDisabled(false);
   setMapFilterDisabled(false);
@@ -232,6 +245,8 @@ var activatePage = function () {
   adFormSubmit.addEventListener('click', onAdFormSubmitClick);
   selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
   selectRoomNumber.addEventListener('change', onSelectRoomChange);
+  document.addEventListener('keydown', onEscKeydown);
+  currentCard.addEventListener('click', onCardCloseClick);
   pageActive = true;
 };
 
@@ -286,6 +301,15 @@ var onAdFormSubmitClick = function () {
   validateCapacity();
 };
 
+var onCardCloseClick = function () {
+  closeCard();
+};
+
+var onEscKeydown = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closeCard();
+  }
+};
 /* -------------------------Основной код------------------------- */
 
 deactivatePage();
