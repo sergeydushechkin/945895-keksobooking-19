@@ -41,6 +41,12 @@ var addressField = adForm.querySelector('#address');
 
 var selectRoomNumber = adForm.querySelector('#room_number');
 var selectRoomCapacity = adForm.querySelector('#capacity');
+var inputTitle = adForm.querySelector('#title');
+var selectType = adForm.querySelector('#type');
+var inputPrice = adForm.querySelector('#price');
+var selectTime = adForm.querySelector('.ad-form__element--time');
+var selectTimein = selectTime.querySelector('#timein');
+var selectTimeout = selectTime.querySelector('#timeout');
 
 // Для проверки состояния страницы
 var pageActive = false;
@@ -235,6 +241,11 @@ var deactivatePage = function () {
   adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
   selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
   selectRoomNumber.removeEventListener('change', onSelectRoomChange);
+  inputTitle.removeEventListener('input', onTitleInput);
+  selectType.removeEventListener('change', onTypeChange);
+  inputPrice.removeEventListener('input', onPriceInput);
+  selectTime.addEventListener('change', onTimeChange);
+
   document.removeEventListener('keydown', onEscKeydown);
   map.removeEventListener('click', onMapClick);
   map.removeEventListener('keydown', onMapKeydown);
@@ -251,6 +262,11 @@ var activatePage = function () {
   adFormSubmit.addEventListener('click', onAdFormSubmitClick);
   selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
   selectRoomNumber.addEventListener('change', onSelectRoomChange);
+  inputTitle.addEventListener('input', onTitleInput);
+  selectType.addEventListener('change', onTypeChange);
+  inputPrice.addEventListener('input', onPriceInput);
+  selectTime.addEventListener('change', onTimeChange);
+
   document.addEventListener('keydown', onEscKeydown);
   map.addEventListener('click', onMapClick);
   map.addEventListener('keydown', onMapKeydown);
@@ -264,6 +280,17 @@ var setAddressField = function () {
   } else {
     addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
   }
+};
+
+// Устанавливает сообщение валидации и выделяет цветом
+var setValidity = function (element, message) {
+  if (message) {
+    element.classList.add('ad-form__error');
+  } else {
+    element.classList.remove('ad-form__error');
+  }
+
+  element.setCustomValidity(message);
 };
 
 // Валидация полей с комнатами и гостями
@@ -282,13 +309,53 @@ var validateCapacity = function () {
     validityMessage = 'В 100 комнатах не может быть гостей';
   }
 
-  if (validityMessage) {
-    selectRoomCapacity.classList.add('ad-form__error');
-  } else {
-    selectRoomCapacity.classList.remove('ad-form__error');
-  }
+  setValidity(selectRoomCapacity, validityMessage);
+};
 
-  selectRoomCapacity.setCustomValidity(validityMessage);
+// Валидация поля заголовка
+var validateTitle = function () {
+  var validityMessage = '';
+  if (inputTitle.value.length < 30) {
+    validityMessage = 'Заголовок должен содержать не менее 30 символов';
+  } else if (inputTitle.value.length > 100) {
+    validityMessage = 'Заголовок должен содержать не более  100 символов';
+  }
+  setValidity(inputTitle, validityMessage);
+};
+
+// Валидация поля цена
+var validatePrice = function () {
+  var validityMessage = '';
+  var minPrice = parseInt(inputPrice.min, 10);
+
+  if (inputPrice.value < minPrice) {
+    validityMessage = 'Цена за ночь не может быть меньше чем ' + minPrice;
+  } else if (inputPrice.value > 1000000) {
+    validityMessage = 'Цена за ночь не может быть больше чем 1000000';
+  }
+  setValidity(inputPrice, validityMessage);
+};
+
+// Валидация поля типа жилья и проверка цены
+var validateType = function () {
+  var minPrice = 0;
+  switch (selectType.value) {
+    case ('bungalo'):
+      minPrice = 0;
+      break;
+    case ('flat'):
+      minPrice = 1000;
+      break;
+    case ('house'):
+      minPrice = 5000;
+      break;
+    case ('palace'):
+      minPrice = 10000;
+      break;
+  }
+  inputPrice.min = minPrice;
+  inputPrice.placeholder = minPrice;
+  validatePrice();
 };
 
 /* -------------------------Обработчики------------------------- */
@@ -306,6 +373,28 @@ var onSelectRoomChange = function () {
 // Клике по кнопке отправить
 var onAdFormSubmitClick = function () {
   validateCapacity();
+  validateTitle();
+  validateType();
+};
+
+var onTitleInput = function () {
+  validateTitle();
+};
+
+var onTypeChange = function () {
+  validateType();
+};
+
+var onPriceInput = function () {
+  validatePrice();
+};
+
+var onTimeChange = function (evt) {
+  if (evt.target === selectTimein) {
+    selectTimeout.value = selectTimein.value;
+  } else if (evt.target === selectTimeout) {
+    selectTimein.value = selectTimeout.value;
+  }
 };
 
 var onCardCloseClick = function () {
