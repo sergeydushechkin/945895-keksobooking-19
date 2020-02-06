@@ -23,7 +23,7 @@ var MAIN_PIN_INACTIVE_RADIUS = 32;
 var MAIN_PIN_WIDTH = 64;
 var MAIN_PIN_HEIGHT = 80;
 
-// var ESC_KEY = 'Escape';
+var ESC_KEY = 'Escape';
 var ENTER_KEY = 'Enter';
 
 /* -------------------------Переменные------------------------- */
@@ -41,10 +41,16 @@ var addressField = adForm.querySelector('#address');
 
 var selectRoomNumber = adForm.querySelector('#room_number');
 var selectRoomCapacity = adForm.querySelector('#capacity');
+var inputTitle = adForm.querySelector('#title');
+var selectType = adForm.querySelector('#type');
+var inputPrice = adForm.querySelector('#price');
+var selectTime = adForm.querySelector('.ad-form__element--time');
+var selectTimein = selectTime.querySelector('#timein');
+var selectTimeout = selectTime.querySelector('#timeout');
 
 // Для проверки состояния страницы
 var pageActive = false;
-
+var currentCard;
 /* -------------------------Функции------------------------- */
 
 // Перемешивает значения массива для случайной выборки
@@ -107,10 +113,11 @@ var generateOffers = function (amount) {
 };
 
 // Создаем метку
-var createPin = function (blank) {
+var createPin = function (blank, offerNum) {
   var pin = pinTemplate.cloneNode(true);
   var pinImage = pin.querySelector('img');
 
+  pin.dataset.offerNum = offerNum;
   pin.style.top = (blank.location.y - pin.style.height) + 'px';
   pin.style.left = (blank.location.x - pin.style.width / 2) + 'px';
   pinImage.src = blank.author.avatar;
@@ -124,7 +131,7 @@ var setPins = function (blanks) {
   var mapPins = document.createDocumentFragment();
 
   for (var pinIndex = 0; pinIndex < blanks.length; pinIndex++) {
-    mapPins.appendChild(createPin(blanks[pinIndex]));
+    mapPins.appendChild(createPin(blanks[pinIndex], pinIndex));
   }
 
   return mapPins;
@@ -175,12 +182,29 @@ var makeCard = function (cardData) {
   card.querySelector('.popup__text--capacity').textContent = cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей';
   card.querySelector('.popup__text--time').textContent = 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout;
   card.querySelector('.popup__description').textContent = cardData.offer.description;
-  card.querySelector('.popup__avatar').textContent = cardData.author.avatar;
+  card.querySelector('.popup__avatar').src = cardData.author.avatar;
 
   fillCardElements(card.querySelector('.popup__features'), renderCardFeatures(cardData.offer.features));
   fillCardElements(card.querySelector('.popup__photos'), renderCardPhotos(cardData.offer.photos));
 
   return card;
+};
+
+// Закрытие карточки
+var closeCard = function () {
+  if (currentCard) {
+    currentCard.removeEventListener('click', onCardCloseClick);
+    currentCard.parentElement.removeChild(currentCard);
+    currentCard = undefined;
+  }
+};
+
+// Открытие карточки
+var openCard = function (offer) {
+  closeCard();
+  currentCard = makeCard(offer);
+  map.insertBefore(currentCard, map.querySelector('.map__filters-container'));
+  currentCard.addEventListener('click', onCardCloseClick);
 };
 
 // Переключить состояние набору элементов
@@ -212,19 +236,25 @@ var setMapFilterDisabled = function (state) {
 var deactivatePage = function () {
   setAdFormDisabled(true);
   setMapFilterDisabled(true);
-  pageActive = false;
+  closeCard();
+
   adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
   selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
   selectRoomNumber.removeEventListener('change', onSelectRoomChange);
+  inputTitle.removeEventListener('input', onTitleInput);
+  selectType.removeEventListener('change', onTypeChange);
+  inputPrice.removeEventListener('input', onPriceInput);
+  selectTime.addEventListener('change', onTimeChange);
+
+  document.removeEventListener('keydown', onEscKeydown);
+  map.removeEventListener('click', onMapClick);
+  map.removeEventListener('keydown', onMapKeydown);
+  pageActive = false;
 };
 
 // Активирует страницу
 var activatePage = function () {
-  var offers = generateOffers(OFFERS_AMOUNT);
-
   map.appendChild(setPins(offers));
-
-  map.insertBefore(makeCard(offers[0]), map.querySelector('.map__filters-container'));
   document.querySelector('.map').classList.remove('map--faded');
   setAdFormDisabled(false);
   setMapFilterDisabled(false);
@@ -232,6 +262,14 @@ var activatePage = function () {
   adFormSubmit.addEventListener('click', onAdFormSubmitClick);
   selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
   selectRoomNumber.addEventListener('change', onSelectRoomChange);
+  inputTitle.addEventListener('input', onTitleInput);
+  selectType.addEventListener('change', onTypeChange);
+  inputPrice.addEventListener('input', onPriceInput);
+  selectTime.addEventListener('change', onTimeChange);
+
+  document.addEventListener('keydown', onEscKeydown);
+  map.addEventListener('click', onMapClick);
+  map.addEventListener('keydown', onMapKeydown);
   pageActive = true;
 };
 
@@ -242,6 +280,17 @@ var setAddressField = function () {
   } else {
     addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
   }
+};
+
+// Устанавливает сообщение валидации и выделяет цветом
+var setValidity = function (element, message) {
+  if (message) {
+    element.classList.add('ad-form__error');
+  } else {
+    element.classList.remove('ad-form__error');
+  }
+
+  element.setCustomValidity(message);
 };
 
 // Валидация полей с комнатами и гостями
@@ -260,13 +309,53 @@ var validateCapacity = function () {
     validityMessage = 'В 100 комнатах не может быть гостей';
   }
 
-  if (validityMessage) {
-    selectRoomCapacity.classList.add('ad-form__error');
-  } else {
-    selectRoomCapacity.classList.remove('ad-form__error');
-  }
+  setValidity(selectRoomCapacity, validityMessage);
+};
 
-  selectRoomCapacity.setCustomValidity(validityMessage);
+// Валидация поля заголовка
+var validateTitle = function () {
+  var validityMessage = '';
+  if (inputTitle.value.length < 30) {
+    validityMessage = 'Заголовок должен содержать не менее 30 символов';
+  } else if (inputTitle.value.length > 100) {
+    validityMessage = 'Заголовок должен содержать не более  100 символов';
+  }
+  setValidity(inputTitle, validityMessage);
+};
+
+// Валидация поля цена
+var validatePrice = function () {
+  var validityMessage = '';
+  var minPrice = parseInt(inputPrice.min, 10);
+
+  if (inputPrice.value < minPrice) {
+    validityMessage = 'Цена за ночь не может быть меньше чем ' + minPrice;
+  } else if (inputPrice.value > 1000000) {
+    validityMessage = 'Цена за ночь не может быть больше чем 1000000';
+  }
+  setValidity(inputPrice, validityMessage);
+};
+
+// Валидация поля типа жилья и проверка цены
+var validateType = function () {
+  var minPrice = 0;
+  switch (selectType.value) {
+    case ('bungalo'):
+      minPrice = 0;
+      break;
+    case ('flat'):
+      minPrice = 1000;
+      break;
+    case ('house'):
+      minPrice = 5000;
+      break;
+    case ('palace'):
+      minPrice = 10000;
+      break;
+  }
+  inputPrice.min = minPrice;
+  inputPrice.placeholder = minPrice;
+  validatePrice();
 };
 
 /* -------------------------Обработчики------------------------- */
@@ -284,10 +373,59 @@ var onSelectRoomChange = function () {
 // Клике по кнопке отправить
 var onAdFormSubmitClick = function () {
   validateCapacity();
+  validateTitle();
+  validateType();
 };
 
-/* -------------------------Основной код------------------------- */
+var onTitleInput = function () {
+  validateTitle();
+};
 
+var onTypeChange = function () {
+  validateType();
+};
+
+var onPriceInput = function () {
+  validatePrice();
+};
+
+var onTimeChange = function (evt) {
+  if (evt.target === selectTimein) {
+    selectTimeout.value = selectTimein.value;
+  } else if (evt.target === selectTimeout) {
+    selectTimein.value = selectTimeout.value;
+  }
+};
+
+var onCardCloseClick = function () {
+  closeCard();
+};
+
+var onEscKeydown = function (evt) {
+  if (evt.key === ESC_KEY) {
+    closeCard();
+  }
+};
+
+var onMapClick = function (evt) {
+  var parent = evt.target.parentElement;
+  if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
+    openCard(offers[parent.dataset.offerNum]);
+    evt.stopPropagation();
+  }
+};
+
+var onMapKeydown = function (evt) {
+  if (evt.key === ENTER_KEY) {
+    var target = evt.target;
+    if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
+      openCard(offers[target.dataset.offerNum]);
+      evt.stopPropagation();
+    }
+  }
+};
+/* -------------------------Основной код------------------------- */
+var offers = generateOffers(OFFERS_AMOUNT);
 deactivatePage();
 setAddressField();
 
