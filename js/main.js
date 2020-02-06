@@ -236,6 +236,8 @@ var deactivatePage = function () {
   selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
   selectRoomNumber.removeEventListener('change', onSelectRoomChange);
   document.removeEventListener('keydown', onEscKeydown);
+  map.removeEventListener('click', onMapClick);
+  map.removeEventListener('keydown', onMapKeydown);
   pageActive = false;
 };
 
