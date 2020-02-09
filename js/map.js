@@ -79,6 +79,7 @@
     }
   };
 
+  // Обработка перетаскивания главного указателя жилья
   var onMainPinMousedown = function (evt) {
     var mouseStart = {
       x: evt.clientX,
@@ -94,8 +95,20 @@
       mouseStart.x = moveEvt.clientX;
       mouseStart.y = moveEvt.clientY;
 
-      window.form.mainPin.style.left = (window.form.mainPin.offsetLeft - shift.x) + 'px';
-      window.form.mainPin.style.top = (window.form.mainPin.offsetTop - shift.y) + 'px';
+      var pinCoord = {
+        x: window.form.mainPin.offsetLeft - shift.x,
+        y: window.form.mainPin.offsetTop - shift.y
+      };
+
+      if (!(pinCoord.x < window.util.Enum.PIN_X_MIN || pinCoord.x > window.util.Enum.PIN_X_MAX)) {
+        window.form.mainPin.style.left = pinCoord.x + 'px';
+      }
+
+      if (!(pinCoord.y < window.util.Enum.PIN_Y_MIN || pinCoord.y > window.util.Enum.PIN_Y_MAX)) {
+        window.form.mainPin.style.top = pinCoord.y + 'px';
+      }
+
+      window.form.setAddressField();
     };
 
     var onMainPinMouseup = function () {
