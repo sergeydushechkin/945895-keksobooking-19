@@ -4,6 +4,7 @@
 
   var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
+  var mainPin = document.querySelector('.map__pin--main');
 
   // Изменяет состояние формы фильтра
   var setMapFilterDisabled = function (state) {
@@ -79,6 +80,34 @@
     }
   };
 
+  var onMainPinMousedown = function (evt) {
+    var mouseStart = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMainPinMousemove = function (moveEvt) {
+      var shift = {
+        x: mouseStart.x - moveEvt.clientX,
+        y: mouseStart.y - moveEvt.clientY
+      };
+
+      mouseStart.x = moveEvt.clientX;
+      mouseStart.y = moveEvt.clientY;
+
+      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
+      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+    };
+
+    var onMainPinMouseup = function () {
+      window.form.setAddressField();
+      document.removeEventListener('mousemove', onMainPinMousemove);
+      document.removeEventListener('mouseup', onMainPinMouseup);
+    };
+
+    document.addEventListener('mousemove', onMainPinMousemove);
+    document.addEventListener('mouseup', onMainPinMouseup);
+  };
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
@@ -86,7 +115,8 @@
     closeCard: closeCard,
     openCard: openCard,
     addMapListeners: addMapListeners,
-    removeMapListeners: removeMapListeners
+    removeMapListeners: removeMapListeners,
+    onMainPinMousedown: onMainPinMousedown
   };
 
 })();
