@@ -10,7 +10,9 @@
     PIN_Y_MAX: 630,
     PIN_WIDTH: 50,
     PIN_HEIGHT: 70,
-    OFFERS_AMOUNT: 8
+    OFFERS_AMOUNT: 8,
+    MAIN_PIN_WIDTH: 64,
+    MAIN_PIN_HEIGHT: 80
   };
 
   // Переключить состояние набору элементов

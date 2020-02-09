@@ -100,7 +100,7 @@
         y: window.form.mainPin.offsetTop - shift.y
       };
 
-      if (!(pinCoord.x < window.util.Enum.PIN_X_MIN || pinCoord.x > window.util.Enum.PIN_X_MAX)) {
+      if (!(pinCoord.x < window.util.Enum.PIN_X_MIN - window.util.Enum.MAIN_PIN_WIDTH / 2 || pinCoord.x > window.util.Enum.PIN_X_MAX + window.util.Enum.MAIN_PIN_WIDTH / 2 )) {
         window.form.mainPin.style.left = pinCoord.x + 'px';
       }
 
