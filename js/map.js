@@ -2,9 +2,6 @@
 
 (function () {
 
-  var ESC_KEY = 'Escape';
-  var ENTER_KEY = 'Enter';
-
   var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
 
@@ -59,7 +56,7 @@
   };
 
   var onEscKeydown = function (evt) {
-    if (evt.key === ESC_KEY) {
+    if (evt.key === window.util.Enum.ESC_KEY) {
       window.map.closeCard();
     }
   };
@@ -73,7 +70,7 @@
   };
 
   var onMapKeydown = function (evt) {
-    if (evt.key === ENTER_KEY) {
+    if (evt.key === window.util.Enum.ENTER_KEY) {
       var target = evt.target;
       if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
         window.map.openCard(window.data.offers[target.dataset.offerNum]);

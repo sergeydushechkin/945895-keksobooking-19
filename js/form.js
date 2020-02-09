@@ -38,7 +38,7 @@
 
   // Заполняет поле адреса
   var setAddressField = function () {
-    if (pageActive) {
+    if (window.form.pageActive) {
       addressField.value = (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT);
     } else {
       addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);

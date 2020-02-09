@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var Enum = {
+    ESC_KEY: 'Escape',
+    ENTER_KEY: 'Enter'
+  };
 
   // Переключить состояние набору элементов
   var setElementsState = function (elements, state) {
@@ -12,7 +16,8 @@
   /* -------------------------Экспорт------------------------- */
 
   window.util = {
-    setElementsState: setElementsState
+    setElementsState: setElementsState,
+    Enum: Enum
   };
 
 })();

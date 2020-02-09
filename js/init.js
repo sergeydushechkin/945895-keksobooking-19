@@ -2,8 +2,6 @@
 
 (function () {
 
-  var ENTER_KEY = 'Enter';
-
   var mainPin = document.querySelector('.map__pin--main');
 
   // Деактивирует страницу
@@ -33,7 +31,7 @@
   window.form.setAddressField();
 
   mainPin.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY && !window.form.pageActive) {
+    if (evt.key === window.util.Enum.ENTER_KEY && !window.form.pageActive) {
       activatePage();
     }
   });
