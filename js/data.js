@@ -45,8 +45,8 @@
     var offers = [];
 
     for (var offersIndex = 0; offersIndex < amount; offersIndex++) {
-      var xCoord = Math.floor(Math.random() * 1100);
-      var yCoord = Math.floor(Math.random() * (window.util.Enum.PIN_Y_MAX - window.util.Enum.PIN_Y_MIN) + window.util.Enum.PIN_Y_MIN);
+      var xCoord = Math.floor(Math.random() * (window.util.Enum.PIN_X_MAX - window.util.Enum.PIN_WIDTH / 2 - window.util.Enum.PIN_X_MIN + window.util.Enum.PIN_WIDTH / 2) + window.util.Enum.PIN_X_MIN + window.util.Enum.PIN_WIDTH / 2);
+      var yCoord = Math.floor(Math.random() * (window.util.Enum.PIN_Y_MAX - window.util.Enum.PIN_Y_MIN) + window.util.Enum.PIN_Y_MIN + window.util.Enum.PIN_HEIGHT);
 
       offers[offersIndex] = {
         author: {

@@ -8,6 +8,8 @@
     PIN_X_MAX: 1136,
     PIN_Y_MIN: 130,
     PIN_Y_MAX: 630,
+    PIN_WIDTH: 50,
+    PIN_HEIGHT: 70,
     OFFERS_AMOUNT: 8
   };
 
