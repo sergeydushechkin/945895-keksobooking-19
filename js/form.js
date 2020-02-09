@@ -189,6 +189,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.form = {
+    pageActive: pageActive,
     setAdFormDisabled: setAdFormDisabled,
     setAddressField: setAddressField,
     addFormListeners: addFormListeners,
