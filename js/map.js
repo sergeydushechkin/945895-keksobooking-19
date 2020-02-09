@@ -4,7 +4,6 @@
 
   var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
-  var mainPin = document.querySelector('.map__pin--main');
 
   // Изменяет состояние формы фильтра
   var setMapFilterDisabled = function (state) {
@@ -95,8 +94,8 @@
       mouseStart.x = moveEvt.clientX;
       mouseStart.y = moveEvt.clientY;
 
-      mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
-      mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
+      window.form.mainPin.style.left = (window.form.mainPin.offsetLeft - shift.x) + 'px';
+      window.form.mainPin.style.top = (window.form.mainPin.offsetTop - shift.y) + 'px';
     };
 
     var onMainPinMouseup = function () {

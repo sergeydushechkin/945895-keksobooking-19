@@ -3,7 +3,10 @@
 (function () {
   var Enum = {
     ESC_KEY: 'Escape',
-    ENTER_KEY: 'Enter'
+    ENTER_KEY: 'Enter',
+    PIN_Y_MIN: 130,
+    PIN_Y_MAX: 630,
+    OFFERS_AMOUNT: 8
   };
 
   // Переключить состояние набору элементов

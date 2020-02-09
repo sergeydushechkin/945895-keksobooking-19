@@ -16,10 +16,6 @@
     'Все апартаменты располагают гостиной зоной с диваном, обеденной зоной и полностью оборудованной кухней с микроволновой печью, холодильником и плитой. В распоряжении гостей собственная ванная комната с душем, феном и бесплатными туалетно-косметическими принадлежностями.'
   ];
 
-  var OFFERS_AMOUNT = 8;
-  var PIN_Y_MIN = 130;
-  var PIN_Y_MAX = 630;
-
   // Перемешивает значения массива для случайной выборки
   var mixArray = function (array) {
     var mixedArray = array.slice();
@@ -50,7 +46,7 @@
 
     for (var offersIndex = 0; offersIndex < amount; offersIndex++) {
       var xCoord = Math.floor(Math.random() * 1100);
-      var yCoord = Math.floor(Math.random() * (PIN_Y_MAX - PIN_Y_MIN) + PIN_Y_MIN);
+      var yCoord = Math.floor(Math.random() * (window.util.Enum.PIN_Y_MAX - window.util.Enum.PIN_Y_MIN) + window.util.Enum.PIN_Y_MIN);
 
       offers[offersIndex] = {
         author: {
@@ -83,7 +79,7 @@
 
   window.data = {
     generateOffers: generateOffers,
-    offers: generateOffers(OFFERS_AMOUNT)
+    offers: generateOffers(window.util.Enum.OFFERS_AMOUNT)
   };
 
 })();

@@ -189,6 +189,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.form = {
+    mainPin: mainPin,
     pageActive: pageActive,
     setAdFormDisabled: setAdFormDisabled,
     setAddressField: setAddressField,
