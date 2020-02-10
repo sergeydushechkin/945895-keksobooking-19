@@ -104,7 +104,7 @@
         window.form.mainPin.style.left = pinCoord.x + 'px';
       }
 
-      if (!(pinCoord.y < window.util.Enum.PIN_Y_MIN || pinCoord.y > window.util.Enum.PIN_Y_MAX)) {
+      if (!(pinCoord.y < window.util.Enum.PIN_Y_MIN - window.util.Enum.MAIN_PIN_HEIGHT || pinCoord.y > window.util.Enum.PIN_Y_MAX - window.util.Enum.MAIN_PIN_HEIGHT)) {
         window.form.mainPin.style.top = pinCoord.y + 'px';
       }
 
