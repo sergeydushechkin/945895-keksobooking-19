@@ -40,8 +40,9 @@
     if (evt.button === 0) {
       if (!window.form.pageActive) {
         activatePage();
+        window.form.setAddressField();
       }
-      window.form.setAddressField();
+      window.map.onMainPinMousedown(evt);
     }
   });
 

@@ -79,6 +79,47 @@
     }
   };
 
+  // Обработка перетаскивания главного указателя жилья
+  var onMainPinMousedown = function (evt) {
+    var mouseStart = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMainPinMousemove = function (moveEvt) {
+      var shift = {
+        x: mouseStart.x - moveEvt.clientX,
+        y: mouseStart.y - moveEvt.clientY
+      };
+
+      mouseStart.x = moveEvt.clientX;
+      mouseStart.y = moveEvt.clientY;
+
+      var pinCoord = {
+        x: window.form.mainPin.offsetLeft - shift.x,
+        y: window.form.mainPin.offsetTop - shift.y
+      };
+
+      if (!(pinCoord.x < window.util.Enum.PIN_X_MIN - window.util.Enum.MAIN_PIN_WIDTH / 2 || pinCoord.x > window.util.Enum.PIN_X_MAX + window.util.Enum.MAIN_PIN_WIDTH / 2)) {
+        window.form.mainPin.style.left = pinCoord.x + 'px';
+      }
+
+      if (!(pinCoord.y < window.util.Enum.PIN_Y_MIN - window.util.Enum.MAIN_PIN_HEIGHT || pinCoord.y > window.util.Enum.PIN_Y_MAX - window.util.Enum.MAIN_PIN_HEIGHT)) {
+        window.form.mainPin.style.top = pinCoord.y + 'px';
+      }
+
+      window.form.setAddressField();
+    };
+
+    var onMainPinMouseup = function () {
+      window.form.setAddressField();
+      document.removeEventListener('mousemove', onMainPinMousemove);
+      document.removeEventListener('mouseup', onMainPinMouseup);
+    };
+
+    document.addEventListener('mousemove', onMainPinMousemove);
+    document.addEventListener('mouseup', onMainPinMouseup);
+  };
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
@@ -86,7 +127,8 @@
     closeCard: closeCard,
     openCard: openCard,
     addMapListeners: addMapListeners,
-    removeMapListeners: removeMapListeners
+    removeMapListeners: removeMapListeners,
+    onMainPinMousedown: onMainPinMousedown
   };
 
 })();
