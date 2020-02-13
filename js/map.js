@@ -13,7 +13,8 @@
     window.util.setElementsState(filterSelects, state);
 
     if (!state) {
-      map.appendChild(window.pins.setPins(window.data.offers));
+      window.network.loadPins(onPinsLoadSuccess, onPinsLoadError);
+      // map.appendChild(window.pins.setPins(window.data.generateOffers(window.util.Enum.OFFERS_AMOUNT)));
       document.querySelector('.map').classList.remove('map--faded');
     }
   };
@@ -50,6 +51,17 @@
   };
 
   /* -------------------------Обработчики------------------------- */
+
+  // При удачной загрузке меток
+  var onPinsLoadSuccess = function (offers) {
+    window.data.offers = offers;
+    map.appendChild(window.pins.setPins(window.data.offers));
+  };
+
+  // При ошибке загрузки меток
+  var onPinsLoadError = function (errorText) {
+    window.util.showMessage(errorText, 'red');
+  };
 
   var onCardCloseClick = function () {
     closeCard();
