@@ -14,7 +14,7 @@
     window.util.setElementsState(filterSelects, state);
 
     if (!state) {
-      window.network.loadPins(onPinsLoadSuccess, onPinsLoadError);
+      window.network.load(onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
     }
   };

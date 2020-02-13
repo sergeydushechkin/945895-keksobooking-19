@@ -5,7 +5,7 @@
   var URL_PINS = 'https://js.dump.academy/keksobooking/data';
   var STATUS_OK = 200;
 
-  var loadPins = function (onLoad, onError) {
+  var load = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = 10000;
@@ -31,7 +31,7 @@
   };
 
   window.network = {
-    loadPins: loadPins
+    load: load
   };
 
 })();
