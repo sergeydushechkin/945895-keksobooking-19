@@ -4,6 +4,7 @@
 
   var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
+  var offers = [];
 
   // Изменяет состояние формы фильтра
   var setMapFilterDisabled = function (state) {
@@ -14,7 +15,6 @@
 
     if (!state) {
       window.network.loadPins(onPinsLoadSuccess, onPinsLoadError);
-      // map.appendChild(window.pins.setPins(window.data.generateOffers(window.util.Enum.OFFERS_AMOUNT)));
       document.querySelector('.map').classList.remove('map--faded');
     }
   };
@@ -53,9 +53,9 @@
   /* -------------------------Обработчики------------------------- */
 
   // При удачной загрузке меток
-  var onPinsLoadSuccess = function (offers) {
-    window.data.offers = offers;
-    map.appendChild(window.pins.setPins(window.data.offers));
+  var onPinsLoadSuccess = function (loadedOffers) {
+    offers = loadedOffers;
+    map.appendChild(window.pins.setPins(offers));
   };
 
   // При ошибке загрузки меток
@@ -79,7 +79,7 @@
   var onMapClick = function (evt) {
     var parent = evt.target.parentElement;
     if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
-      window.map.openCard(window.data.offers[parent.dataset.offerNum]);
+      window.map.openCard(offers[parent.dataset.offerNum]);
       evt.stopPropagation();
     }
   };
@@ -89,7 +89,7 @@
     if (evt.key === window.util.Enum.ENTER_KEY) {
       var target = evt.target;
       if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
-        window.map.openCard(window.data.offers[target.dataset.offerNum]);
+        window.map.openCard(offers[target.dataset.offerNum]);
         evt.stopPropagation();
       }
     }
@@ -139,6 +139,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
+    offers: offers,
     setMapFilterDisabled: setMapFilterDisabled,
     closeCard: closeCard,
     openCard: openCard,
