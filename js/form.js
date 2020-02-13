@@ -23,6 +23,9 @@
 
   var mainPin = document.querySelector('.map__pin--main');
 
+  var successPopupTemplate = document.querySelector('#success').content.querySelector('.success');
+  var successPopup = successPopupTemplate.cloneNode(true);
+
   // Для проверки состояния страницы
   var pageActive = false;
 
@@ -123,6 +126,7 @@
 
   // Добавляет обработчики формы
   var addFormListeners = function () {
+    adForm.addEventListener('submit', onAdFormSubmit);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
     selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
     selectRoomNumber.addEventListener('change', onSelectRoomChange);
@@ -134,6 +138,7 @@
 
   // Удаляет обработчики формы
   var removeFormListeners = function () {
+    adForm.removeEventListener('submit', onAdFormSubmit);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
     selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
     selectRoomNumber.removeEventListener('change', onSelectRoomChange);
@@ -141,6 +146,37 @@
     selectType.removeEventListener('change', onTypeChange);
     inputPrice.removeEventListener('input', onPriceInput);
     selectTime.removeEventListener('change', onTimeChange);
+  };
+
+  var closeSuccessMessage = function () {
+    successPopup.parentElement.removeChild(successPopup);
+    document.removeEventListener('click', onSuccessMessageClick);
+    document.removeEventListener('keydown', onSuccessMessageKeydown);
+    window.init.deactivatePage();
+  };
+
+  var onSuccessMessageClick = function () {
+    closeSuccessMessage();
+  };
+
+  var onSuccessMessageKeydown = function (evt) {
+    if (evt.key === window.util.Enum.ESC_KEY) {
+      closeSuccessMessage();
+    }
+  };
+
+  // Показывает сообщение об успешной отправке формы
+  var showSuccessMessage = function () {
+    document.querySelector('main').appendChild(successPopup);
+    document.addEventListener('click', onSuccessMessageClick);
+    document.addEventListener('keydown', onSuccessMessageKeydown);
+  };
+
+  // Показывает сообщение об ошибке отправки формы
+  var showErrorMessage = function () {
+    var errorPopupTemplate = document.querySelector('#error').content.querySelector('.error');
+    var errorPopup = errorPopupTemplate.cloneNode(true);
+    document.querySelector('main').appendChild(errorPopup);
   };
 
   /* -------------------------Обработчики------------------------- */
@@ -184,6 +220,23 @@
     } else if (evt.target === selectTimeout) {
       selectTimein.value = selectTimeout.value;
     }
+  };
+
+  // Успешная отправка формы
+  var onAdFormSubmitSuccess = function () {
+    adForm.reset();
+    showSuccessMessage();
+  };
+
+  // Ошибка отправки формы
+  var onAdFormSubmitError = function () {
+    showErrorMessage();
+  };
+
+  // При отправке формы
+  var onAdFormSubmit = function (evt) {
+    window.network.sendOffer(new FormData(adForm), onAdFormSubmitSuccess, onAdFormSubmitError);
+    evt.preventDefault();
   };
 
   /* -------------------------Экспорт------------------------- */

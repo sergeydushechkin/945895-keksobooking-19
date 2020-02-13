@@ -25,6 +25,13 @@
     window.form.pageActive = true;
   };
 
+  /* -------------------------Экспорт------------------------- */
+
+  window.init = {
+    deactivatePage: deactivatePage,
+    activatePage: activatePage,
+  };
+
   /* -------------------------Основной код------------------------- */
 
   deactivatePage();
