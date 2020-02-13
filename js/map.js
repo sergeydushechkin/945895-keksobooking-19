@@ -63,16 +63,19 @@
     window.util.showMessage(errorText, 'red');
   };
 
+  // При закрытии карточки
   var onCardCloseClick = function () {
     closeCard();
   };
 
+  // При нажатии ESC
   var onEscKeydown = function (evt) {
     if (evt.key === window.util.Enum.ESC_KEY) {
       window.map.closeCard();
     }
   };
 
+  // При клике на метках карты
   var onMapClick = function (evt) {
     var parent = evt.target.parentElement;
     if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
@@ -81,6 +84,7 @@
     }
   };
 
+  // При нажатии ENTER на карте
   var onMapKeydown = function (evt) {
     if (evt.key === window.util.Enum.ENTER_KEY) {
       var target = evt.target;
