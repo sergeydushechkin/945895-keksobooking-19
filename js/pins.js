@@ -25,7 +25,9 @@
     var mapPins = document.createDocumentFragment();
 
     for (var pinIndex = 0; pinIndex < blanks.length; pinIndex++) {
-      mapPins.appendChild(createPin(blanks[pinIndex], pinIndex));
+      if (blanks[pinIndex].offer) {
+        mapPins.appendChild(createPin(blanks[pinIndex], pinIndex));
+      }
     }
 
     return mapPins;
