@@ -23,7 +23,9 @@
   // Отрисовывает метки на карте
   var renderPins = function (container, data) {
     data.forEach(function (pin) {
-      container.appendChild(createPin(pin));
+      if (pin.offer) {
+        container.appendChild(createPin(pin));
+      }
     });
   };
 
