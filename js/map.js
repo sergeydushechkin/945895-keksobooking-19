@@ -25,6 +25,10 @@
     if (!state) {
       window.network.load(URL_PINS, onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
+    } else {
+      offers = [];
+      document.querySelector('.map').classList.add('map--faded');
+      // window.pins.clearPins(map);
     }
   };
 

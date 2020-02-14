@@ -32,10 +32,16 @@
     });
   };
 
+  // Удаляет метки с карты
+  var clearPins = function (container) {
+    container.innerHTML = '';
+  };
+
   /* -------------------------Экспорт------------------------- */
 
   window.pins = {
-    renderPins: renderPins
+    renderPins: renderPins,
+    clearPins: clearPins
   };
 
 })();
