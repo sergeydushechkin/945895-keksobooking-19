@@ -2,8 +2,18 @@
 
 (function () {
 
+  var URL_PINS = 'https://js.dump.academy/keksobooking/data';
+
+  var PinsLimits = {
+    PINS_X_MIN: 0,
+    PINS_X_MAX: 1136,
+    PINS_Y_MIN: 130,
+    PINS_Y_MAX: 630
+  };
+
   var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
+  var offers = [];
 
   // Изменяет состояние формы фильтра
   var setMapFilterDisabled = function (state) {
@@ -13,7 +23,7 @@
     window.util.setElementsState(filterSelects, state);
 
     if (!state) {
-      map.appendChild(window.pins.setPins(window.data.offers));
+      window.network.load(URL_PINS, onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
     }
   };
@@ -51,29 +61,44 @@
 
   /* -------------------------Обработчики------------------------- */
 
+  // При удачной загрузке меток
+  var onPinsLoadSuccess = function (loadedOffers) {
+    offers = loadedOffers;
+    window.pins.renderPins(map, offers);
+  };
+
+  // При ошибке загрузки меток
+  var onPinsLoadError = function (errorText) {
+    window.util.showMessage(errorText, 'red');
+  };
+
+  // При закрытии карточки
   var onCardCloseClick = function () {
     closeCard();
   };
 
+  // При нажатии ESC
   var onEscKeydown = function (evt) {
     if (evt.key === window.util.Enum.ESC_KEY) {
       window.map.closeCard();
     }
   };
 
+  // При клике на метках карты
   var onMapClick = function (evt) {
     var parent = evt.target.parentElement;
     if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
-      window.map.openCard(window.data.offers[parent.dataset.offerNum]);
+      window.map.openCard(offers[parent.dataset.offerNum]);
       evt.stopPropagation();
     }
   };
 
+  // При нажатии ENTER на карте
   var onMapKeydown = function (evt) {
     if (evt.key === window.util.Enum.ENTER_KEY) {
       var target = evt.target;
       if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
-        window.map.openCard(window.data.offers[target.dataset.offerNum]);
+        window.map.openCard(offers[target.dataset.offerNum]);
         evt.stopPropagation();
       }
     }
@@ -100,11 +125,11 @@
         y: window.form.mainPin.offsetTop - shift.y
       };
 
-      if (!(pinCoord.x < window.util.Enum.PIN_X_MIN - window.util.Enum.MAIN_PIN_WIDTH / 2 || pinCoord.x > window.util.Enum.PIN_X_MAX + window.util.Enum.MAIN_PIN_WIDTH / 2)) {
+      if (!(pinCoord.x < PinsLimits.PINS_X_MIN - window.form.MAIN_PIN_WIDTH / 2 || pinCoord.x > PinsLimits.PINS_X_MAX + window.form.MAIN_PIN_WIDTH / 2)) {
         window.form.mainPin.style.left = pinCoord.x + 'px';
       }
 
-      if (!(pinCoord.y < window.util.Enum.PIN_Y_MIN - window.util.Enum.MAIN_PIN_HEIGHT || pinCoord.y > window.util.Enum.PIN_Y_MAX - window.util.Enum.MAIN_PIN_HEIGHT)) {
+      if (!(pinCoord.y < PinsLimits.PINS_Y_MIN - window.form.MAIN_PIN_HEIGHT || pinCoord.y > PinsLimits.PINS_Y_MAX - window.form.MAIN_PIN_HEIGHT)) {
         window.form.mainPin.style.top = pinCoord.y + 'px';
       }
 
@@ -123,6 +148,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
+    offers: offers,
     setMapFilterDisabled: setMapFilterDisabled,
     closeCard: closeCard,
     openCard: openCard,

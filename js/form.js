@@ -3,6 +3,8 @@
 (function () {
 
   var MAIN_PIN_INACTIVE_RADIUS = 32;
+  var MAIN_PIN_WIDTH = 64;
+  var MAIN_PIN_HEIGHT = 80;
 
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
@@ -37,7 +39,7 @@
   // Заполняет поле адреса
   var setAddressField = function () {
     if (window.form.pageActive) {
-      addressField.value = (mainPin.offsetLeft + window.util.Enum.MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + window.util.Enum.MAIN_PIN_HEIGHT);
+      addressField.value = (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT);
     } else {
       addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
     }
@@ -187,6 +189,8 @@
   /* -------------------------Экспорт------------------------- */
 
   window.form = {
+    MAIN_PIN_WIDTH: MAIN_PIN_WIDTH,
+    MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     mainPin: mainPin,
     pageActive: pageActive,
     setAdFormDisabled: setAdFormDisabled,

@@ -2,6 +2,9 @@
 
 (function () {
 
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
+
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   /* -------------------------Функции------------------------- */
@@ -12,29 +15,27 @@
     var pinImage = pin.querySelector('img');
 
     pin.dataset.offerNum = offerNum;
-    pin.style.top = (blank.location.y - window.util.Enum.PIN_HEIGHT) + 'px';
-    pin.style.left = (blank.location.x - window.util.Enum.PIN_WIDTH / 2) + 'px';
+    pin.style.top = (blank.location.y - PIN_HEIGHT) + 'px';
+    pin.style.left = (blank.location.x - PIN_WIDTH / 2) + 'px';
     pinImage.src = blank.author.avatar;
     pinImage.alt = blank.offer.title;
 
     return pin;
   };
 
-  // Наполняет фрагмент метками
-  var setPins = function (blanks) {
-    var mapPins = document.createDocumentFragment();
-
-    for (var pinIndex = 0; pinIndex < blanks.length; pinIndex++) {
-      mapPins.appendChild(createPin(blanks[pinIndex], pinIndex));
-    }
-
-    return mapPins;
+  // Отрисовывает метки на карте
+  var renderPins = function (container, data) {
+    data.forEach(function (pin) {
+      if (pin.offer) {
+        container.appendChild(createPin(pin));
+      }
+    });
   };
 
   /* -------------------------Экспорт------------------------- */
 
   window.pins = {
-    setPins: setPins
+    renderPins: renderPins
   };
 
 })();
