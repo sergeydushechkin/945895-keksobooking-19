@@ -2,10 +2,9 @@
 
 (function () {
 
-  var URL_PINS = 'https://js.dump.academy/keksobooking/data';
   var STATUS_OK = 200;
 
-  var load = function (onLoad, onError) {
+  var load = function (url, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = 10000;
@@ -26,7 +25,7 @@
       onError('Запрос на получение данных не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.open('GET', URL_PINS);
+    xhr.open('GET', url);
     xhr.send();
   };
 

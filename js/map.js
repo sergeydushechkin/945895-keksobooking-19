@@ -2,6 +2,15 @@
 
 (function () {
 
+  var URL_PINS = 'https://js.dump.academy/keksobooking/data';
+
+  var PinsLimits = {
+    PINS_X_MIN: 0,
+    PINS_X_MAX: 1136,
+    PINS_Y_MIN: 130,
+    PINS_Y_MAX: 630
+  };
+
   var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
   var offers = [];
@@ -14,7 +23,7 @@
     window.util.setElementsState(filterSelects, state);
 
     if (!state) {
-      window.network.load(onPinsLoadSuccess, onPinsLoadError);
+      window.network.load(URL_PINS, onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
     }
   };
@@ -116,11 +125,11 @@
         y: window.form.mainPin.offsetTop - shift.y
       };
 
-      if (!(pinCoord.x < window.util.Enum.PIN_X_MIN - window.util.Enum.MAIN_PIN_WIDTH / 2 || pinCoord.x > window.util.Enum.PIN_X_MAX + window.util.Enum.MAIN_PIN_WIDTH / 2)) {
+      if (!(pinCoord.x < PinsLimits.PINS_X_MIN - window.form.MAIN_PIN_WIDTH / 2 || pinCoord.x > PinsLimits.PINS_X_MAX + window.form.MAIN_PIN_WIDTH / 2)) {
         window.form.mainPin.style.left = pinCoord.x + 'px';
       }
 
-      if (!(pinCoord.y < window.util.Enum.PIN_Y_MIN - window.util.Enum.MAIN_PIN_HEIGHT || pinCoord.y > window.util.Enum.PIN_Y_MAX - window.util.Enum.MAIN_PIN_HEIGHT)) {
+      if (!(pinCoord.y < PinsLimits.PINS_Y_MIN - window.form.MAIN_PIN_HEIGHT || pinCoord.y > PinsLimits.PINS_Y_MAX - window.form.MAIN_PIN_HEIGHT)) {
         window.form.mainPin.style.top = pinCoord.y + 'px';
       }
 
