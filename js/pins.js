@@ -20,23 +20,17 @@
     return pin;
   };
 
-  // Наполняет фрагмент метками
-  var setPins = function (blanks) {
-    var mapPins = document.createDocumentFragment();
-
-    for (var pinIndex = 0; pinIndex < blanks.length; pinIndex++) {
-      if (blanks[pinIndex].offer) {
-        mapPins.appendChild(createPin(blanks[pinIndex], pinIndex));
-      }
-    }
-
-    return mapPins;
+  // Отрисовывает метки на карте
+  var renderPins = function (container, data) {
+    data.forEach(function (pin) {
+      container.appendChild(createPin(pin));
+    });
   };
 
   /* -------------------------Экспорт------------------------- */
 
   window.pins = {
-    setPins: setPins
+    renderPins: renderPins
   };
 
 })();

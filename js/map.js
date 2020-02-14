@@ -55,7 +55,7 @@
   // При удачной загрузке меток
   var onPinsLoadSuccess = function (loadedOffers) {
     offers = loadedOffers;
-    map.appendChild(window.pins.setPins(offers));
+    window.pins.renderPins(map, offers);
   };
 
   // При ошибке загрузки меток
