@@ -25,10 +25,12 @@
 
   // Отрисовывает метки на карте
   var renderPins = function (container, data) {
+    var offerNum = 0;
     data.forEach(function (pin) {
       if (pin.offer) {
-        container.appendChild(createPin(pin));
+        container.appendChild(createPin(pin, offerNum));
       }
+      offerNum++;
     });
   };
 

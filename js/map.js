@@ -84,7 +84,7 @@
   // При нажатии ESC
   var onEscKeydown = function (evt) {
     if (evt.key === window.util.Enum.ESC_KEY) {
-      window.map.closeCard();
+      closeCard();
     }
   };
 
@@ -92,7 +92,7 @@
   var onMapClick = function (evt) {
     var parent = evt.target.parentElement;
     if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
-      window.map.openCard(offers[parent.dataset.offerNum]);
+      openCard(offers[parent.dataset.offerNum]);
       evt.stopPropagation();
     }
   };
@@ -102,7 +102,7 @@
     if (evt.key === window.util.Enum.ENTER_KEY) {
       var target = evt.target;
       if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
-        window.map.openCard(offers[target.dataset.offerNum]);
+        openCard(offers[target.dataset.offerNum]);
         evt.stopPropagation();
       }
     }
