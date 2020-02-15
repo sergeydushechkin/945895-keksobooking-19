@@ -34,7 +34,10 @@
 
   // Удаляет метки с карты
   var clearPins = function (container) {
-    container.innerHTML = '';
+    var pins = container.querySelectorAll('button[type="button"].map__pin');
+    pins.forEach(function (pin) {
+      container.removeChild(pin);
+    });
   };
 
   /* -------------------------Экспорт------------------------- */

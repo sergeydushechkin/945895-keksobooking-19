@@ -28,7 +28,7 @@
     } else {
       offers = [];
       document.querySelector('.map').classList.add('map--faded');
-      // window.pins.clearPins(map);
+      window.pins.clearPins(map);
     }
   };
 
