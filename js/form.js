@@ -2,6 +2,8 @@
 
 (function () {
 
+  var URL_OFFER_SEND = 'https://js.dump.academy/keksobooking';
+
   var MAIN_PIN_INACTIVE_RADIUS = 32;
   var MAIN_PIN_WIDTH = 64;
   var MAIN_PIN_HEIGHT = 80;
@@ -201,7 +203,7 @@
 
   // При отправке формы
   var onAdFormSubmit = function (evt) {
-    window.network.sendOffer(new FormData(adForm), onAdFormSubmitSuccess, onAdFormSubmitError);
+    window.network.send(URL_OFFER_SEND, new FormData(adForm), onAdFormSubmitSuccess, onAdFormSubmitError);
     evt.preventDefault();
   };
 
