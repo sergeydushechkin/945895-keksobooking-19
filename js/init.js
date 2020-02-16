@@ -2,8 +2,6 @@
 
 (function () {
 
-  var mainPin = document.querySelector('.map__pin--main');
-
   // Деактивирует страницу
   var deactivatePage = function () {
     window.form.setAdFormDisabled(true);
@@ -11,6 +9,10 @@
     window.map.setMapFilterDisabled(true);
     window.map.removeMapListeners();
     window.map.closeCard();
+    window.pins.clearPins();
+    window.pins.resetMainPin();
+    window.form.setAddressField();
+    window.map.offers = [];
 
     window.form.pageActive = false;
   };
@@ -35,15 +37,14 @@
   /* -------------------------Основной код------------------------- */
 
   deactivatePage();
-  window.form.setAddressField();
 
-  mainPin.addEventListener('keydown', function (evt) {
+  window.pins.mainPin.addEventListener('keydown', function (evt) {
     if (evt.key === window.util.Enum.ENTER_KEY && !window.form.pageActive) {
       activatePage();
     }
   });
 
-  mainPin.addEventListener('mousedown', function (evt) {
+  window.pins.mainPin.addEventListener('mousedown', function (evt) {
     if (evt.button === 0) {
       if (!window.form.pageActive) {
         activatePage();

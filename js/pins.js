@@ -5,6 +5,7 @@
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
 
+  var mainPin = document.querySelector('.map__pin--main');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   /* -------------------------Функции------------------------- */
@@ -35,18 +36,26 @@
   };
 
   // Удаляет метки с карты
-  var clearPins = function (container) {
-    var pins = container.querySelectorAll('button[type="button"].map__pin');
+  var clearPins = function () {
+    var pins = window.map.map.querySelectorAll('button[type="button"].map__pin');
     pins.forEach(function (pin) {
-      container.removeChild(pin);
+      window.map.map.removeChild(pin);
     });
+  };
+
+  // Сбрасывает главную метку
+  var resetMainPin = function () {
+    mainPin.style.top = '375px';
+    mainPin.style.left = '570px';
   };
 
   /* -------------------------Экспорт------------------------- */
 
   window.pins = {
+    mainPin: mainPin,
     renderPins: renderPins,
-    clearPins: clearPins
+    clearPins: clearPins,
+    resetMainPin: resetMainPin
   };
 
 })();

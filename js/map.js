@@ -26,9 +26,7 @@
       window.network.load(URL_PINS, onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
     } else {
-      offers = [];
       document.querySelector('.map').classList.add('map--faded');
-      window.pins.clearPins(map);
     }
   };
 
@@ -152,6 +150,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
+    map: map,
     offers: offers,
     setMapFilterDisabled: setMapFilterDisabled,
     closeCard: closeCard,
