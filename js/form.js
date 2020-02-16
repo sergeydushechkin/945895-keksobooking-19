@@ -123,6 +123,7 @@
 
   // Добавляет обработчики формы
   var addFormListeners = function () {
+    adForm.addEventListener('submit', onAdFormSubmit);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
     selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
     selectRoomNumber.addEventListener('change', onSelectRoomChange);
@@ -134,6 +135,7 @@
 
   // Удаляет обработчики формы
   var removeFormListeners = function () {
+    adForm.removeEventListener('submit', onAdFormSubmit);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
     selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
     selectRoomNumber.removeEventListener('change', onSelectRoomChange);
@@ -184,6 +186,23 @@
     } else if (evt.target === selectTimeout) {
       selectTimein.value = selectTimeout.value;
     }
+  };
+
+  // Успешная отправка формы
+  var onAdFormSubmitSuccess = function () {
+    adForm.reset();
+    window.popups.showSuccessMessage();
+  };
+
+  // Ошибка отправки формы
+  var onAdFormSubmitError = function () {
+    window.popups.showErrorMessage();
+  };
+
+  // При отправке формы
+  var onAdFormSubmit = function (evt) {
+    window.network.send(new FormData(adForm), onAdFormSubmitSuccess, onAdFormSubmitError);
+    evt.preventDefault();
   };
 
   /* -------------------------Экспорт------------------------- */
