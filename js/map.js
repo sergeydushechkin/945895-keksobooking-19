@@ -2,8 +2,6 @@
 
 (function () {
 
-  var URL_PINS = 'https://js.dump.academy/keksobooking/data';
-
   var PinsLimits = {
     PINS_X_MIN: 0,
     PINS_X_MAX: 1136,
@@ -23,7 +21,7 @@
     window.util.setElementsState(filterSelects, state);
 
     if (!state) {
-      window.network.load(URL_PINS, onPinsLoadSuccess, onPinsLoadError);
+      window.network.load(onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
     } else {
       document.querySelector('.map').classList.add('map--faded');
