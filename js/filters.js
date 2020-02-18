@@ -5,25 +5,16 @@
 
   var housingType = mapFilterForm.querySelector('#housing-type');
 
-  // Добавляет обработчики фильтрам
-  var addFiltersListeners = function () {
-    housingType.addEventListener('change', onHousingTypeChange);
-  };
-
-  // Удаляет обработчики фильтрам
-  var removeFiltersListeners = function () {
-    housingType.removeEventListener('change', onHousingTypeChange);
-  };
-
-  // Изменяет состояние формы фильтра
+  // Переключает состояния(активная/не активная) формы фильтрации
   var setMapFilterDisabled = function (state) {
     var filterSelects = mapFilterForm.querySelectorAll('select');
     mapFilterForm.querySelector('.map__features').disabled = state;
     window.util.setElementsState(filterSelects, state);
+
     if (!state) {
-      addFiltersListeners();
+      mapFilterForm.addEventListener('change', onFilteFormChange);
     } else {
-      removeFiltersListeners();
+      mapFilterForm.removeEventListener('change', onFilteFormChange);
     }
   };
 
@@ -35,24 +26,25 @@
   };
 
   // Фильтрация типа жилья
-  var filterHousingType = function () {
-    if (housingType.value !== 'any') {
-      window.map.filteredOffers = window.map.filteredOffers.filter(function (offer) {
-        return offer.offer.type === housingType.value;
-      });
-    }
+  var filterHousingType = function (element) {
+    return housingType.value === 'any' ? true : element.offer.type === housingType.value;
   };
 
   // Общая фильтрация меток
-  var applyFilters = function () {
-    window.map.filteredOffers = window.map.offers.slice();
-    filterHousingType();
-    reloadFilteredPins();
+  var applyFilters = function (data) {
+    return data
+      .filter(function (element) {
+        return (
+          filterHousingType(element)
+        );
+      })
+      .slice();
   };
 
   /* -------------------------Обработчики------------------------- */
-  var onHousingTypeChange = function () {
-    applyFilters();
+  var onFilteFormChange = function () {
+    window.map.filteredOffers = applyFilters(window.map.offers);
+    reloadFilteredPins();
   };
 
   /* -------------------------Экспорт------------------------- */
