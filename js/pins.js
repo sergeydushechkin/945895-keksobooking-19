@@ -2,6 +2,9 @@
 
 (function () {
 
+  // Отрисовывать 5 ближайших меток
+  var PINS_AMOUNT = 5;
+
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
 
@@ -27,12 +30,14 @@
   // Отрисовывает метки на карте
   var renderPins = function (container, data) {
     var offerNum = 0;
-    data.forEach(function (pin) {
-      if (pin.offer) {
-        container.appendChild(createPin(pin, offerNum));
+    var pinNum = 0;
+    while (pinNum < PINS_AMOUNT && offerNum < data.length) {
+      if (data[offerNum].offer) {
+        container.appendChild(createPin(data[pinNum], offerNum));
+        pinNum++;
       }
       offerNum++;
-    });
+    }
   };
 
   // Удаляет метки с карты
