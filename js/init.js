@@ -22,7 +22,6 @@
   var activatePage = function () {
     window.form.setAdFormDisabled(false);
     window.form.addFormListeners();
-    window.filters.setMapFilterDisabled(false);
     window.map.setMapDisabled(false);
     window.map.addMapListeners();
 

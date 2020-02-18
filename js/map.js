@@ -58,6 +58,7 @@
 
   // При удачной загрузке меток
   var onPinsLoadSuccess = function (loadedOffers) {
+    window.filters.setMapFilterDisabled(false);
     window.map.offers = loadedOffers;
     window.map.filteredOffers = window.map.offers.slice();
     window.pins.renderPins(map, window.map.offers);
