@@ -6,7 +6,8 @@
   var deactivatePage = function () {
     window.form.setAdFormDisabled(true);
     window.form.removeFormListeners();
-    window.map.setMapFilterDisabled(true);
+    window.filters.setMapFilterDisabled(true);
+    window.map.setMapDisabled(true);
     window.map.removeMapListeners();
     window.map.closeCard();
     window.pins.clearPins();
@@ -21,7 +22,8 @@
   var activatePage = function () {
     window.form.setAdFormDisabled(false);
     window.form.addFormListeners();
-    window.map.setMapFilterDisabled(false);
+    window.filters.setMapFilterDisabled(false);
+    window.map.setMapDisabled(false);
     window.map.addMapListeners();
 
     window.form.pageActive = true;
