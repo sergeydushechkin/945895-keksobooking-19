@@ -27,19 +27,32 @@
     }
   };
 
-  /* -------------------------Обработчики------------------------- */
-  var onHousingTypeChange = function () {
-    if (housingType.value !== 'any') {
-      window.map.filteredOffers = window.map.offers.filter(function (offer) {
-        return offer.offer.type === housingType.value;
-      });
-    } else {
-      window.map.filteredOffers = window.map.offers.slice();
-    }
-
+  // Перезагружает отфильтрованные метки
+  var reloadFilteredPins = function () {
     window.map.closeCard();
     window.pins.clearPins();
     window.pins.renderPins(window.map.map, window.map.filteredOffers);
+  };
+
+  // Фильтрация типа жилья
+  var filterHousingType = function () {
+    if (housingType.value !== 'any') {
+      window.map.filteredOffers = window.map.filteredOffers.filter(function (offer) {
+        return offer.offer.type === housingType.value;
+      });
+    }
+  };
+
+  // Общая фильтрация меток
+  var applyFilters = function () {
+    window.map.filteredOffers = window.map.offers.slice();
+    filterHousingType();
+    reloadFilteredPins();
+  };
+
+  /* -------------------------Обработчики------------------------- */
+  var onHousingTypeChange = function () {
+    applyFilters();
   };
 
   /* -------------------------Экспорт------------------------- */
