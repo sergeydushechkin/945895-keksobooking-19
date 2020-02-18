@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   // Делает список удобств карточки
@@ -40,12 +39,12 @@
   // Создает карточку объявления
   var makeCard = function (cardData) {
     var card = mapCardTemplate.cloneNode(true);
-    var housingTypes = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
+    var housingTypesMap = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
     card.querySelector('.popup__title').textContent = cardData.offer.title;
     card.querySelector('.popup__text--address').textContent = cardData.offer.address;
     card.querySelector('.popup__text--price').textContent = cardData.offer.price + '₽/ночь';
-    card.querySelector('.popup__type').textContent = housingTypes[cardData.offer.type];
+    card.querySelector('.popup__type').textContent = housingTypesMap[cardData.offer.type];
     card.querySelector('.popup__text--capacity').textContent = cardData.offer.rooms + ' комнаты для ' + cardData.offer.guests + ' гостей';
     card.querySelector('.popup__text--time').textContent = 'Заезд после ' + cardData.offer.checkin + ', выезд до ' + cardData.offer.checkout;
     card.querySelector('.popup__description').textContent = cardData.offer.description;
