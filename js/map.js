@@ -9,17 +9,12 @@
     PINS_Y_MAX: 630
   };
 
-  var mapFilterForm = document.querySelector('.map__filters');
   var map = document.querySelector('.map__pins');
   var offers = [];
+  var filteredOffers = [];
 
-  // Изменяет состояние формы фильтра
-  var setMapFilterDisabled = function (state) {
-    var filterSelects = mapFilterForm.querySelectorAll('select');
-
-    mapFilterForm.querySelector('.map__features').disabled = state;
-    window.util.setElementsState(filterSelects, state);
-
+  // Изменяет состояние карты и загружает метки
+  var setMapDisabled = function (state) {
     if (!state) {
       window.network.load(onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
@@ -63,8 +58,10 @@
 
   // При удачной загрузке меток
   var onPinsLoadSuccess = function (loadedOffers) {
-    offers = loadedOffers;
-    window.pins.renderPins(map, offers);
+    window.filters.setMapFilterDisabled(false);
+    window.map.offers = loadedOffers;
+    window.map.filteredOffers = window.map.offers.slice();
+    window.pins.renderPins(map, window.map.offers);
   };
 
   // При ошибке загрузки меток
@@ -88,7 +85,7 @@
   var onMapClick = function (evt) {
     var parent = evt.target.parentElement;
     if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
-      openCard(offers[parent.dataset.offerNum]);
+      openCard(window.map.filteredOffers[parent.dataset.offerNum]);
       evt.stopPropagation();
     }
   };
@@ -98,7 +95,7 @@
     if (evt.key === window.util.Enum.ENTER_KEY) {
       var target = evt.target;
       if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
-        openCard(offers[target.dataset.offerNum]);
+        openCard(window.map.filteredOffers[target.dataset.offerNum]);
         evt.stopPropagation();
       }
     }
@@ -150,7 +147,8 @@
   window.map = {
     map: map,
     offers: offers,
-    setMapFilterDisabled: setMapFilterDisabled,
+    filteredOffers: filteredOffers,
+    setMapDisabled: setMapDisabled,
     closeCard: closeCard,
     openCard: openCard,
     addMapListeners: addMapListeners,
