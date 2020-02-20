@@ -107,6 +107,7 @@
 
   /* -------------------------Экспорт------------------------- */
   window.filters = {
+    mapFilterForm: mapFilterForm,
     setMapFilterDisabled: setMapFilterDisabled
   };
 

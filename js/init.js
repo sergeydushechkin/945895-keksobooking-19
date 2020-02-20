@@ -13,6 +13,7 @@
     window.pins.clearPins();
     window.pins.resetMainPin();
     window.form.setAddressField();
+    window.filters.mapFilterForm.reset();
     window.map.offers = [];
 
     window.form.pageActive = false;
