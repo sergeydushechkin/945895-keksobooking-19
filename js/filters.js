@@ -27,9 +27,9 @@
     window.util.setElementsState(filterSelects, state);
 
     if (!state) {
-      mapFilterForm.addEventListener('change', onFilteFormChange);
+      mapFilterForm.addEventListener('change', onFilterFormChange);
     } else {
-      mapFilterForm.removeEventListener('change', onFilteFormChange);
+      mapFilterForm.removeEventListener('change', onFilterFormChange);
     }
   };
 
@@ -100,10 +100,10 @@
   };
 
   /* -------------------------Обработчики------------------------- */
-  var onFilteFormChange = function () {
+  var onFilterFormChange = window.debounce(function () {
     window.map.filteredOffers = applyFilters(window.map.offers);
     reloadFilteredPins();
-  };
+  });
 
   /* -------------------------Экспорт------------------------- */
   window.filters = {
