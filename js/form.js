@@ -23,6 +23,11 @@
 
   var mainPin = document.querySelector('.map__pin--main');
 
+  var avatarImage = document.querySelector('.ad-form-header__preview img');
+  var avatarInput = document.querySelector('.ad-form__field input[type=file]');
+  var housePhoto = document.querySelector('.ad-form__photo');
+  var houseUpload = document.querySelector('.ad-form__upload input[type=file]');
+
   // Для проверки состояния страницы
   var pageActive = false;
 
@@ -131,6 +136,8 @@
     selectType.addEventListener('change', onTypeChange);
     inputPrice.addEventListener('input', onPriceInput);
     selectTime.addEventListener('change', onTimeChange);
+    avatarInput.addEventListener('change', onAvatarInputChange);
+    houseUpload.addEventListener('change', onHouseUploadChange);
   };
 
   // Удаляет обработчики формы
@@ -143,6 +150,8 @@
     selectType.removeEventListener('change', onTypeChange);
     inputPrice.removeEventListener('input', onPriceInput);
     selectTime.removeEventListener('change', onTimeChange);
+    avatarInput.removeEventListener('change', onAvatarInputChange);
+    houseUpload.removeEventListener('change', onHouseUploadChange);
   };
 
   /* -------------------------Обработчики------------------------- */
@@ -204,6 +213,17 @@
     window.network.send(new FormData(adForm), onAdFormSubmitSuccess, onAdFormSubmitError);
     evt.preventDefault();
   };
+
+  // При изменении инпута с фотографией жилья
+  var onHouseUploadChange = function () {
+    window.images.loadImage(houseUpload, housePhoto);
+  };
+
+  // При изменении инпута с аватаром
+  var onAvatarInputChange = function () {
+    window.images.loadImage(avatarInput, avatarImage);
+  };
+
 
   /* -------------------------Экспорт------------------------- */
 
