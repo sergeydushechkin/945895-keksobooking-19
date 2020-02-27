@@ -154,6 +154,13 @@
     houseUpload.removeEventListener('change', onHouseUploadChange);
   };
 
+  // Сбрасывает форму
+  var resetAdForm = function () {
+    avatarImage.src = 'img/muffin-grey.svg';
+    housePhoto.style.backgroundImage = '';
+    adForm.reset();
+  };
+
   /* -------------------------Обработчики------------------------- */
 
   // При изменении количества гостей
@@ -199,7 +206,7 @@
 
   // Успешная отправка формы
   var onAdFormSubmitSuccess = function () {
-    adForm.reset();
+    resetAdForm();
     window.popups.showSuccessMessage();
   };
 
