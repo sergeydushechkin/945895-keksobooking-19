@@ -8,7 +8,6 @@
     window.form.removeFormListeners();
     window.filters.setMapFilterDisabled(true);
     window.map.setMapDisabled(true);
-    window.map.removeMapListeners();
     window.map.closeCard();
     window.pins.clearPins();
     window.pins.resetMainPin();
@@ -24,7 +23,6 @@
     window.form.setAdFormDisabled(false);
     window.form.addFormListeners();
     window.map.setMapDisabled(false);
-    window.map.addMapListeners();
 
     window.form.pageActive = true;
   };

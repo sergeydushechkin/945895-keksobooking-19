@@ -13,16 +13,30 @@
 
   /* -------------------------Функции------------------------- */
 
+  // Навешивает обработчики на метки
+  var addPinListeners = function (pin, data) {
+    pin.addEventListener('click', function () {
+      window.map.openCard(data);
+    });
+
+    pin.addEventListener('keydown', function (evt) {
+      if (evt.key === window.util.Enum.ENTER_KEY) {
+        window.map.openCard(data);
+      }
+    });
+  };
+
   // Создает метку
-  var createPin = function (blank, offerNum) {
+  var createPin = function (offerData) {
     var pin = pinTemplate.cloneNode(true);
     var pinImage = pin.querySelector('img');
 
-    pin.dataset.offerNum = offerNum;
-    pin.style.top = (blank.location.y - PIN_HEIGHT) + 'px';
-    pin.style.left = (blank.location.x - PIN_WIDTH / 2) + 'px';
-    pinImage.src = blank.author.avatar;
-    pinImage.alt = blank.offer.title;
+    pin.style.top = (offerData.location.y - PIN_HEIGHT) + 'px';
+    pin.style.left = (offerData.location.x - PIN_WIDTH / 2) + 'px';
+    pinImage.src = offerData.author.avatar;
+    pinImage.alt = offerData.offer.title;
+
+    addPinListeners(pin, offerData);
 
     return pin;
   };
@@ -33,7 +47,7 @@
     var pinNum = 0;
     while (pinNum < PINS_AMOUNT && offerNum < data.length) {
       if (data[offerNum].offer) {
-        container.appendChild(createPin(data[pinNum], offerNum));
+        container.appendChild(createPin(data[pinNum]));
         pinNum++;
       }
       offerNum++;

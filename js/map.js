@@ -18,8 +18,10 @@
     if (!state) {
       window.network.load(onPinsLoadSuccess, onPinsLoadError);
       document.querySelector('.map').classList.remove('map--faded');
+      document.addEventListener('keydown', onEscKeydown);
     } else {
       document.querySelector('.map').classList.add('map--faded');
+      document.removeEventListener('keydown', onEscKeydown);
     }
   };
 
@@ -38,20 +40,6 @@
     closeCard();
     map.insertBefore(card, map.querySelector('.map__filters-container'));
     card.addEventListener('click', onCardCloseClick);
-  };
-
-  // Добавляет обработчики событий карты
-  var addMapListeners = function () {
-    document.addEventListener('keydown', onEscKeydown);
-    map.addEventListener('click', onMapClick);
-    map.addEventListener('keydown', onMapKeydown);
-  };
-
-  // Удаляет обработчики событий карты
-  var removeMapListeners = function () {
-    document.removeEventListener('keydown', onEscKeydown);
-    map.removeEventListener('click', onMapClick);
-    map.removeEventListener('keydown', onMapKeydown);
   };
 
   /* -------------------------Обработчики------------------------- */
@@ -78,26 +66,6 @@
   var onEscKeydown = function (evt) {
     if (evt.key === window.util.Enum.ESC_KEY) {
       closeCard();
-    }
-  };
-
-  // При клике на метках карты
-  var onMapClick = function (evt) {
-    var parent = evt.target.parentElement;
-    if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
-      openCard(window.map.filteredOffers[parent.dataset.offerNum]);
-      evt.stopPropagation();
-    }
-  };
-
-  // При нажатии ENTER на карте
-  var onMapKeydown = function (evt) {
-    if (evt.key === window.util.Enum.ENTER_KEY) {
-      var target = evt.target;
-      if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
-        openCard(window.map.filteredOffers[target.dataset.offerNum]);
-        evt.stopPropagation();
-      }
     }
   };
 
@@ -151,8 +119,6 @@
     setMapDisabled: setMapDisabled,
     closeCard: closeCard,
     openCard: openCard,
-    addMapListeners: addMapListeners,
-    removeMapListeners: removeMapListeners,
     onMainPinMousedown: onMainPinMousedown
   };
 
