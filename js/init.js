@@ -7,7 +7,7 @@
     window.form.setAdFormDisabled(true);
     window.form.removeFormListeners();
     window.filters.setMapFilterDisabled(true);
-    window.map.enableMap();
+    window.map.disableMap();
     window.map.closeCard();
     window.pins.clearPins();
     window.pins.resetMainPin();
@@ -22,7 +22,7 @@
   var activatePage = function () {
     window.form.setAdFormDisabled(false);
     window.form.addFormListeners();
-    window.map.disableMap();
+    window.map.enableMap();
 
     window.form.pageActive = true;
   };
