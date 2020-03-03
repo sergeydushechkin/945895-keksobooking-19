@@ -32,6 +32,7 @@
     if (card) {
       card.removeEventListener('click', onCardCloseClick);
       card.parentElement.removeChild(card);
+      window.pins.removePinSelection();
     }
   };
 

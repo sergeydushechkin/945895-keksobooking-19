@@ -11,17 +11,32 @@
   var mainPin = document.querySelector('.map__pin--main');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
+  var lastPin;
   /* -------------------------Функции------------------------- */
+  // Снимает выделение с активной метки
+  var removePinSelection = function () {
+    if (lastPin) {
+      lastPin.classList.remove('map__pin--active');
+    }
+  };
+
+  // Активация метки
+  var activatePin = function (pin, data) {
+    removePinSelection();
+    window.map.openCard(data);
+    lastPin = pin;
+    pin.classList.add('map__pin--active');
+  };
 
   // Навешивает обработчики на метки
   var addPinListeners = function (pin, data) {
     pin.addEventListener('click', function () {
-      window.map.openCard(data);
+      activatePin(pin, data);
     });
 
     pin.addEventListener('keydown', function (evt) {
       if (evt.key === window.util.Enum.ENTER_KEY) {
-        window.map.openCard(data);
+        activatePin(pin, data);
       }
     });
   };
@@ -72,6 +87,7 @@
 
   window.pins = {
     mainPin: mainPin,
+    removePinSelection: removePinSelection,
     renderPins: renderPins,
     clearPins: clearPins,
     resetMainPin: resetMainPin
