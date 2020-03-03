@@ -13,16 +13,17 @@
   var offers = [];
   var filteredOffers = [];
 
-  // Изменяет состояние карты и загружает метки
-  var setMapDisabled = function (state) {
-    if (!state) {
-      window.network.load(onPinsLoadSuccess, onPinsLoadError);
-      document.querySelector('.map').classList.remove('map--faded');
-      document.addEventListener('keydown', onEscKeydown);
-    } else {
-      document.querySelector('.map').classList.add('map--faded');
-      document.removeEventListener('keydown', onEscKeydown);
-    }
+  // Активирует карту и загружает метки
+  var enableMap = function () {
+    window.network.load(onPinsLoadSuccess, onPinsLoadError);
+    document.querySelector('.map').classList.remove('map--faded');
+    document.addEventListener('keydown', onEscKeydown);
+  };
+
+  // Отключает карту
+  var disableMap = function () {
+    document.querySelector('.map').classList.add('map--faded');
+    document.removeEventListener('keydown', onEscKeydown);
   };
 
   // Закрытие карточки
@@ -116,7 +117,8 @@
     map: map,
     offers: offers,
     filteredOffers: filteredOffers,
-    setMapDisabled: setMapDisabled,
+    enableMap: enableMap,
+    disableMap: disableMap,
     closeCard: closeCard,
     openCard: openCard,
     onMainPinMousedown: onMainPinMousedown
