@@ -10,6 +10,7 @@
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
   var addressField = adForm.querySelector('#address');
 
   var selectRoomNumber = adForm.querySelector('#room_number');
@@ -130,6 +131,7 @@
   var addFormListeners = function () {
     adForm.addEventListener('submit', onAdFormSubmit);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
+    adFormReset.addEventListener('click', onAdFormResetClick);
     selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
     selectRoomNumber.addEventListener('change', onSelectRoomChange);
     inputTitle.addEventListener('input', onTitleInput);
@@ -144,6 +146,7 @@
   var removeFormListeners = function () {
     adForm.removeEventListener('submit', onAdFormSubmit);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
+    adFormReset.removeEventListener('click', onAdFormResetClick);
     selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
     selectRoomNumber.removeEventListener('change', onSelectRoomChange);
     inputTitle.removeEventListener('input', onTitleInput);
@@ -154,10 +157,19 @@
     houseUpload.removeEventListener('change', onHouseUploadChange);
   };
 
+  // Удаляет красную обводку у полей с ошибками
+  var removeErrorRedBorders = function () {
+    var errors = adForm.querySelectorAll('.ad-form__error');
+    Array.from(errors).forEach(function (error) {
+      error.classList.remove('ad-form__error');
+    });
+  };
+
   // Сбрасывает форму
   var resetAdForm = function () {
     avatarImage.src = 'img/muffin-grey.svg';
     housePhoto.style.backgroundImage = '';
+    removeErrorRedBorders();
     adForm.reset();
   };
 
@@ -219,6 +231,12 @@
   var onAdFormSubmit = function (evt) {
     window.network.send(new FormData(adForm), onAdFormSubmitSuccess, onAdFormSubmitError);
     evt.preventDefault();
+  };
+
+  // При сбросе формы
+  var onAdFormResetClick = function () {
+    resetAdForm();
+    window.init.deactivatePage();
   };
 
   // При изменении инпута с фотографией жилья
