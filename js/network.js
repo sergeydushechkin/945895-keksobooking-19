@@ -3,13 +3,15 @@
 (function () {
 
   var STATUS_OK = 200;
+  var TIMEOUT = 10000;
+  var RESPONSE_TYPE = 'json';
 
   var load = function (onLoad, onError) {
     var URL_PINS = 'https://js.dump.academy/keksobooking/data';
 
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.timeout = 10000;
+    xhr.responseType = RESPONSE_TYPE;
+    xhr.timeout = TIMEOUT;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === STATUS_OK) {
@@ -35,8 +37,8 @@
     var URL_OFFER_SEND = 'https://js.dump.academy/keksobooking';
 
     var xhr = new XMLHttpRequest();
-    xhr.responseType = 'json';
-    xhr.timeout = 10000;
+    xhr.responseType = RESPONSE_TYPE;
+    xhr.timeout = TIMEOUT;
 
     xhr.addEventListener('load', function () {
       if (xhr.status === STATUS_OK) {

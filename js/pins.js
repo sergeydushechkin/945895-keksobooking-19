@@ -8,6 +8,9 @@
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
 
+  var MAIN_PIN_DEFAULT_TOP = '375px';
+  var MAIN_PIN_DEFAULT_LEFT = '570px';
+
   var mainPin = document.querySelector('.map__pin--main');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -79,8 +82,8 @@
 
   // Сбрасывает главную метку
   var resetMainPin = function () {
-    mainPin.style.top = '375px';
-    mainPin.style.left = '570px';
+    mainPin.style.top = MAIN_PIN_DEFAULT_TOP;
+    mainPin.style.left = MAIN_PIN_DEFAULT_LEFT;
   };
 
   /* -------------------------Экспорт------------------------- */

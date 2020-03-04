@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var PHOTO_WIDTH = '45';
+  var PHOTO_HEIGHT = '40';
+  var PHOTO_TEXT = 'Фотография жилья';
+
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   // Делает список удобств карточки
@@ -22,9 +26,9 @@
       var child = document.createElement('img');
       child.classList.add('popup__photo');
       child.src = photo;
-      child.alt = 'Фотография жилья';
-      child.width = '45';
-      child.height = '40';
+      child.alt = PHOTO_TEXT;
+      child.width = PHOTO_WIDTH;
+      child.height = PHOTO_HEIGHT;
       photosFragment.appendChild(child);
     });
     return photosFragment;
