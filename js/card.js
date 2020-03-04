@@ -6,27 +6,27 @@
   // Делает список удобств карточки
   var renderCardFeatures = function (cardFeatures) {
     var featuresFragment = document.createDocumentFragment();
-    for (var featuresIndex = 0; featuresIndex < cardFeatures.length; featuresIndex++) {
+    cardFeatures.forEach(function (feature) {
       var child = document.createElement('li');
       child.classList.add('popup__feature');
-      child.classList.add('popup__feature--' + cardFeatures[featuresIndex]);
+      child.classList.add('popup__feature--' + feature);
       featuresFragment.appendChild(child);
-    }
+    });
     return featuresFragment;
   };
 
-  // Делает список фотографик карточки
+  // Делает список фотографий карточки
   var renderCardPhotos = function (offerPhotos) {
     var photosFragment = document.createDocumentFragment();
-    for (var photoNum = 0; photoNum < offerPhotos.length; photoNum++) {
+    offerPhotos.forEach(function (photo) {
       var child = document.createElement('img');
       child.classList.add('popup__photo');
-      child.src = offerPhotos[photoNum];
+      child.src = photo;
       child.alt = 'Фотография жилья';
       child.width = '45';
       child.height = '40';
       photosFragment.appendChild(child);
-    }
+    });
     return photosFragment;
   };
 
