@@ -66,7 +66,7 @@
 
   // При нажатии ESC
   var onEscKeydown = function (evt) {
-    if (evt.key === window.util.Enum.ESC_KEY) {
+    if (evt.key === window.util.KeyCodes.ESC_KEY) {
       closeCard();
     }
   };

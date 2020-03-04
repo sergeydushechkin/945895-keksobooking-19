@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var Enum = {
+  var KeyCodes = {
     ESC_KEY: 'Escape',
     ENTER_KEY: 'Enter'
   };
@@ -37,7 +37,7 @@
   window.util = {
     setElementsState: setElementsState,
     showMessage: showMessage,
-    Enum: Enum
+    KeyCodes: KeyCodes
   };
 
 })();

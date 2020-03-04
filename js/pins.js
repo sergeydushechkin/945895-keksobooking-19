@@ -38,7 +38,7 @@
     });
 
     pin.addEventListener('keydown', function (evt) {
-      if (evt.key === window.util.Enum.ENTER_KEY) {
+      if (evt.key === window.util.KeyCodes.ENTER_KEY) {
         activatePin(pin, data);
       }
     });

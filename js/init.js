@@ -39,7 +39,7 @@
   deactivatePage();
 
   window.pins.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.key === window.util.Enum.ENTER_KEY && !window.form.pageActive) {
+    if (evt.key === window.util.KeyCodes.ENTER_KEY && !window.form.pageActive) {
       activatePage();
     }
   });
