@@ -44,11 +44,9 @@
 
   // Заполняет поле адреса
   var setAddressField = function () {
-    if (window.form.pageActive) {
-      addressField.value = (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT);
-    } else {
-      addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
-    }
+    addressField.value = window.form.pageActive ?
+      (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT) :
+      (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
   };
 
   // Устанавливает сообщение валидации и выделяет цветом
