@@ -119,6 +119,8 @@
       case ('palace'):
         minPrice = 10000;
         break;
+      default:
+        throw new Error('Поле тип жилья содержит неизвестное значение');
     }
     inputPrice.min = minPrice;
     inputPrice.placeholder = minPrice;

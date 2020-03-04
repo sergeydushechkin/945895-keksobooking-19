@@ -9,6 +9,8 @@
     PINS_Y_MAX: 630
   };
 
+  var EDIT_FIELDS = ['INPUT', 'SELECT', 'TEXTAREA'];
+
   var mapSection = document.querySelector('.map');
   var map = document.querySelector('.map__pins');
   var offers = [];
@@ -67,7 +69,7 @@
 
   // При нажатии ESC
   var onEscKeydown = function (evt) {
-    if (evt.key === window.util.KeyCodes.ESC_KEY) {
+    if (evt.key === window.util.KeyCodes.ESC_KEY && EDIT_FIELDS.indexOf(evt.target.tagName) === -1) {
       closeCard();
     }
   };
