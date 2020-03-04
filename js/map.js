@@ -9,6 +9,7 @@
     PINS_Y_MAX: 630
   };
 
+  var mapSection = document.querySelector('.map');
   var map = document.querySelector('.map__pins');
   var offers = [];
   var filteredOffers = [];
@@ -16,13 +17,13 @@
   // Активирует карту и загружает метки
   var enableMap = function () {
     window.network.load(onPinsLoadSuccess, onPinsLoadError);
-    document.querySelector('.map').classList.remove('map--faded');
+    mapSection.classList.remove('map--faded');
     document.addEventListener('keydown', onEscKeydown);
   };
 
   // Отключает карту
   var disableMap = function () {
-    document.querySelector('.map').classList.add('map--faded');
+    mapSection.classList.add('map--faded');
     document.removeEventListener('keydown', onEscKeydown);
   };
 

@@ -20,9 +20,10 @@
   var housingGuests = mapFilterForm.querySelector('#housing-guests');
   var housingFeatures = mapFilterForm.querySelectorAll('.map__checkbox');
 
+  var filterSelects = mapFilterForm.querySelectorAll('select');
+
   // Переключает состояния(активная/не активная) формы фильтрации
   var setMapFilterDisabled = function (state) {
-    var filterSelects = mapFilterForm.querySelectorAll('select');
     mapFilterForm.querySelector('.map__features').disabled = state;
     window.util.setElementsState(filterSelects, state);
 
