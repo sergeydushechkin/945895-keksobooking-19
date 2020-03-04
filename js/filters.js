@@ -41,41 +41,41 @@
   };
 
   // Фильтрация типа жилья
-  var filterHousingType = function (element) {
-    return housingType.value === 'any' ? true : element.offer.type === housingType.value;
+  var filterHousingType = function (offerData) {
+    return housingType.value === 'any' ? true : offerData.offer.type === housingType.value;
   };
 
   // Фильтрация цены жилья
-  var filterHousingPrice = function (element) {
+  var filterHousingPrice = function (offerData) {
     switch (housingPrice.value) {
       case PriceTypeMap.LOW:
-        return element.offer.price < PriceValueMap.MIN;
+        return offerData.offer.price < PriceValueMap.MIN;
       case PriceTypeMap.MIDDLE:
-        return element.offer.price >= PriceValueMap.MIN && element.offer.price <= PriceValueMap.MAX;
+        return offerData.offer.price >= PriceValueMap.MIN && offerData.offer.price <= PriceValueMap.MAX;
       case PriceTypeMap.HIGH:
-        return element.offer.price > PriceValueMap.MAX;
+        return offerData.offer.price > PriceValueMap.MAX;
       default:
         return true;
     }
   };
 
   // Фильтрация количества комнат
-  var filterHousingRooms = function (element) {
-    return housingRooms.value === 'any' ? true : parseInt(housingRooms.value, 10) === element.offer.rooms;
+  var filterHousingRooms = function (offerData) {
+    return housingRooms.value === 'any' ? true : parseInt(housingRooms.value, 10) === offerData.offer.rooms;
   };
 
   // Фильтрация количества гостей
-  var filterHousingGuests = function (element) {
-    return housingGuests.value === 'any' ? true : parseInt(housingGuests.value, 10) === element.offer.guests;
+  var filterHousingGuests = function (offerData) {
+    return housingGuests.value === 'any' ? true : parseInt(housingGuests.value, 10) === offerData.offer.guests;
   };
 
   // Фильтрация удобств
-  var filterHousingFeatures = function (element) {
+  var filterHousingFeatures = function (offerData) {
     var filterResult = true;
     for (var i = 0; i < housingFeatures.length; i++) {
       if (housingFeatures[i].checked) {
         // Можно было объединить(&&) if'ы, разделил чтобы не делать лишнюю "медленную" проверку если чекбокс не установлен
-        if (element.offer.features.indexOf(housingFeatures[i].value) === -1) {
+        if (offerData.offer.features.indexOf(housingFeatures[i].value) === -1) {
           filterResult = false;
           break;
         }
