@@ -1,16 +1,16 @@
 'use strict';
 
 (function () {
-  var Enum = {
+  var KeyCodes = {
     ESC_KEY: 'Escape',
     ENTER_KEY: 'Enter'
   };
 
   // Переключить состояние набору элементов
   var setElementsState = function (elements, state) {
-    for (var elementIndex = 0; elementIndex < elements.length; elementIndex++) {
-      elements[elementIndex].disabled = state;
-    }
+    Array.from(elements).forEach(function (element) {
+      element.disabled = state;
+    });
   };
 
   // Показ сообщений
@@ -37,7 +37,7 @@
   window.util = {
     setElementsState: setElementsState,
     showMessage: showMessage,
-    Enum: Enum
+    KeyCodes: KeyCodes
   };
 
 })();

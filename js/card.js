@@ -1,32 +1,36 @@
 'use strict';
 
 (function () {
+  var PHOTO_WIDTH = '45';
+  var PHOTO_HEIGHT = '40';
+  var PHOTO_TEXT = 'Фотография жилья';
+
   var mapCardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   // Делает список удобств карточки
   var renderCardFeatures = function (cardFeatures) {
     var featuresFragment = document.createDocumentFragment();
-    for (var featuresIndex = 0; featuresIndex < cardFeatures.length; featuresIndex++) {
+    cardFeatures.forEach(function (feature) {
       var child = document.createElement('li');
       child.classList.add('popup__feature');
-      child.classList.add('popup__feature--' + cardFeatures[featuresIndex]);
+      child.classList.add('popup__feature--' + feature);
       featuresFragment.appendChild(child);
-    }
+    });
     return featuresFragment;
   };
 
-  // Делает список фотографик карточки
+  // Делает список фотографий карточки
   var renderCardPhotos = function (offerPhotos) {
     var photosFragment = document.createDocumentFragment();
-    for (var photoNum = 0; photoNum < offerPhotos.length; photoNum++) {
+    offerPhotos.forEach(function (photo) {
       var child = document.createElement('img');
       child.classList.add('popup__photo');
-      child.src = offerPhotos[photoNum];
-      child.alt = 'Фотография жилья';
-      child.width = '45';
-      child.height = '40';
+      child.src = photo;
+      child.alt = PHOTO_TEXT;
+      child.width = PHOTO_WIDTH;
+      child.height = PHOTO_HEIGHT;
       photosFragment.appendChild(child);
-    }
+    });
     return photosFragment;
   };
 
@@ -37,7 +41,7 @@
   };
 
   // Создает карточку объявления
-  var makeCard = function (cardData) {
+  var make = function (cardData) {
     var card = mapCardTemplate.cloneNode(true);
     var housingTypesMap = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
@@ -59,7 +63,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.card = {
-    makeCard: makeCard
+    make: make
   };
 
 })();

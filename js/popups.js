@@ -48,7 +48,7 @@
   };
 
   var onSuccessMessageKeydown = function (evt) {
-    if (evt.key === window.util.Enum.ESC_KEY) {
+    if (evt.key === window.util.KeyCodes.ESC_KEY) {
       closeSuccessMessage();
     }
   };
@@ -63,7 +63,7 @@
   };
 
   var onErrorMessageKeydown = function (evt) {
-    if (evt.key === window.util.Enum.ESC_KEY) {
+    if (evt.key === window.util.KeyCodes.ESC_KEY) {
       closeErrorMessage();
     }
   };

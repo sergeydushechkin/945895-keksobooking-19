@@ -9,18 +9,24 @@
     PINS_Y_MAX: 630
   };
 
-  var map = document.querySelector('.map__pins');
+  var EDIT_FIELDS = ['INPUT', 'SELECT', 'TEXTAREA'];
+
+  var mapSection = document.querySelector('.map');
+  var container = document.querySelector('.map__pins');
   var offers = [];
   var filteredOffers = [];
 
-  // Изменяет состояние карты и загружает метки
-  var setMapDisabled = function (state) {
-    if (!state) {
-      window.network.load(onPinsLoadSuccess, onPinsLoadError);
-      document.querySelector('.map').classList.remove('map--faded');
-    } else {
-      document.querySelector('.map').classList.add('map--faded');
-    }
+  // Активирует карту и загружает метки
+  var enable = function () {
+    window.network.load(onPinsLoadSuccess, onPinsLoadError);
+    mapSection.classList.remove('map--faded');
+    document.addEventListener('keydown', onEscKeydown);
+  };
+
+  // Отключает карту
+  var disable = function () {
+    mapSection.classList.add('map--faded');
+    document.removeEventListener('keydown', onEscKeydown);
   };
 
   // Закрытие карточки
@@ -29,29 +35,16 @@
     if (card) {
       card.removeEventListener('click', onCardCloseClick);
       card.parentElement.removeChild(card);
+      window.pins.removeSelection();
     }
   };
 
   // Открытие карточки
   var openCard = function (offer) {
-    var card = window.card.makeCard(offer);
+    var card = window.card.make(offer);
     closeCard();
-    map.insertBefore(card, map.querySelector('.map__filters-container'));
+    container.insertBefore(card, container.querySelector('.map__filters-container'));
     card.addEventListener('click', onCardCloseClick);
-  };
-
-  // Добавляет обработчики событий карты
-  var addMapListeners = function () {
-    document.addEventListener('keydown', onEscKeydown);
-    map.addEventListener('click', onMapClick);
-    map.addEventListener('keydown', onMapKeydown);
-  };
-
-  // Удаляет обработчики событий карты
-  var removeMapListeners = function () {
-    document.removeEventListener('keydown', onEscKeydown);
-    map.removeEventListener('click', onMapClick);
-    map.removeEventListener('keydown', onMapKeydown);
   };
 
   /* -------------------------Обработчики------------------------- */
@@ -61,7 +54,7 @@
     window.filters.setMapFilterDisabled(false);
     window.map.offers = loadedOffers;
     window.map.filteredOffers = window.map.offers.slice();
-    window.pins.renderPins(map, window.map.offers);
+    window.pins.render(container, window.map.offers);
   };
 
   // При ошибке загрузки меток
@@ -76,28 +69,8 @@
 
   // При нажатии ESC
   var onEscKeydown = function (evt) {
-    if (evt.key === window.util.Enum.ESC_KEY) {
+    if (evt.key === window.util.KeyCodes.ESC_KEY && EDIT_FIELDS.indexOf(evt.target.tagName) === -1) {
       closeCard();
-    }
-  };
-
-  // При клике на метках карты
-  var onMapClick = function (evt) {
-    var parent = evt.target.parentElement;
-    if (parent.classList.contains('map__pin') && !parent.classList.contains('map__pin--main')) {
-      openCard(window.map.filteredOffers[parent.dataset.offerNum]);
-      evt.stopPropagation();
-    }
-  };
-
-  // При нажатии ENTER на карте
-  var onMapKeydown = function (evt) {
-    if (evt.key === window.util.Enum.ENTER_KEY) {
-      var target = evt.target;
-      if (target.classList.contains('map__pin') && !target.classList.contains('map__pin--main')) {
-        openCard(window.map.filteredOffers[target.dataset.offerNum]);
-        evt.stopPropagation();
-      }
     }
   };
 
@@ -145,14 +118,13 @@
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
-    map: map,
+    container: container,
     offers: offers,
     filteredOffers: filteredOffers,
-    setMapDisabled: setMapDisabled,
+    enable: enable,
+    disable: disable,
     closeCard: closeCard,
     openCard: openCard,
-    addMapListeners: addMapListeners,
-    removeMapListeners: removeMapListeners,
     onMainPinMousedown: onMainPinMousedown
   };
 

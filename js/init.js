@@ -4,27 +4,25 @@
 
   // Деактивирует страницу
   var deactivatePage = function () {
-    window.form.setAdFormDisabled(true);
-    window.form.removeFormListeners();
+    window.form.setDisabled(true);
+    window.form.removeListeners();
     window.filters.setMapFilterDisabled(true);
-    window.map.setMapDisabled(true);
-    window.map.removeMapListeners();
+    window.map.disable();
     window.map.closeCard();
-    window.pins.clearPins();
-    window.pins.resetMainPin();
-    window.form.setAddressField();
+    window.pins.clear();
+    window.pins.resetMain();
     window.filters.mapFilterForm.reset();
     window.map.offers = [];
 
     window.form.pageActive = false;
+    window.form.setAddressField();
   };
 
   // Активирует страницу
   var activatePage = function () {
-    window.form.setAdFormDisabled(false);
-    window.form.addFormListeners();
-    window.map.setMapDisabled(false);
-    window.map.addMapListeners();
+    window.form.setDisabled(false);
+    window.form.addListeners();
+    window.map.enable();
 
     window.form.pageActive = true;
   };
@@ -40,13 +38,13 @@
 
   deactivatePage();
 
-  window.pins.mainPin.addEventListener('keydown', function (evt) {
-    if (evt.key === window.util.Enum.ENTER_KEY && !window.form.pageActive) {
+  window.pins.main.addEventListener('keydown', function (evt) {
+    if (evt.key === window.util.KeyCodes.ENTER_KEY && !window.form.pageActive) {
       activatePage();
     }
   });
 
-  window.pins.mainPin.addEventListener('mousedown', function (evt) {
+  window.pins.main.addEventListener('mousedown', function (evt) {
     if (evt.button === 0) {
       if (!window.form.pageActive) {
         activatePage();

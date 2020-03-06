@@ -11,7 +11,7 @@
   };
 
   // Загружает выбранное изображение в элемент
-  var loadImage = function (fileInput, imageElement) {
+  var load = function (fileInput, imageElement) {
     var filename = fileInput.files[0].name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (extension) {
@@ -36,7 +36,7 @@
   /* ---------------Экспорт--------------- */
 
   window.images = {
-    loadImage: loadImage
+    load: load
   };
 
 })();

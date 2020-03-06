@@ -10,6 +10,7 @@
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
   var adFormSubmit = adForm.querySelector('.ad-form__submit');
+  var adFormReset = adForm.querySelector('.ad-form__reset');
   var addressField = adForm.querySelector('#address');
 
   var selectRoomNumber = adForm.querySelector('#room_number');
@@ -32,7 +33,7 @@
   var pageActive = false;
 
   // Изменяет состояние формы объявления, true - выключить, false - включить
-  var setAdFormDisabled = function (state) {
+  var setDisabled = function (state) {
     if (state) {
       adForm.classList.add('ad-form--disabled');
     } else {
@@ -43,11 +44,9 @@
 
   // Заполняет поле адреса
   var setAddressField = function () {
-    if (window.form.pageActive) {
-      addressField.value = (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT);
-    } else {
-      addressField.value = (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
-    }
+    addressField.value = window.form.pageActive ?
+      (mainPin.offsetLeft + MAIN_PIN_WIDTH / 2) + ', ' + (mainPin.offsetTop + MAIN_PIN_HEIGHT) :
+      (mainPin.offsetLeft + MAIN_PIN_INACTIVE_RADIUS) + ', ' + (mainPin.offsetTop + MAIN_PIN_INACTIVE_RADIUS);
   };
 
   // Устанавливает сообщение валидации и выделяет цветом
@@ -120,6 +119,8 @@
       case ('palace'):
         minPrice = 10000;
         break;
+      default:
+        throw new Error('Поле тип жилья содержит неизвестное значение');
     }
     inputPrice.min = minPrice;
     inputPrice.placeholder = minPrice;
@@ -127,9 +128,10 @@
   };
 
   // Добавляет обработчики формы
-  var addFormListeners = function () {
+  var addListeners = function () {
     adForm.addEventListener('submit', onAdFormSubmit);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
+    adFormReset.addEventListener('click', onAdFormResetClick);
     selectRoomCapacity.addEventListener('change', onSelectCapacityChange);
     selectRoomNumber.addEventListener('change', onSelectRoomChange);
     inputTitle.addEventListener('input', onTitleInput);
@@ -141,9 +143,10 @@
   };
 
   // Удаляет обработчики формы
-  var removeFormListeners = function () {
+  var removeListeners = function () {
     adForm.removeEventListener('submit', onAdFormSubmit);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
+    adFormReset.removeEventListener('click', onAdFormResetClick);
     selectRoomCapacity.removeEventListener('change', onSelectCapacityChange);
     selectRoomNumber.removeEventListener('change', onSelectRoomChange);
     inputTitle.removeEventListener('input', onTitleInput);
@@ -154,10 +157,19 @@
     houseUpload.removeEventListener('change', onHouseUploadChange);
   };
 
+  // Удаляет красную обводку у полей с ошибками
+  var removeErrorRedBorders = function () {
+    var errors = adForm.querySelectorAll('.ad-form__error');
+    Array.from(errors).forEach(function (error) {
+      error.classList.remove('ad-form__error');
+    });
+  };
+
   // Сбрасывает форму
   var resetAdForm = function () {
     avatarImage.src = 'img/muffin-grey.svg';
     housePhoto.style.backgroundImage = '';
+    removeErrorRedBorders();
     adForm.reset();
   };
 
@@ -221,14 +233,20 @@
     evt.preventDefault();
   };
 
+  // При сбросе формы
+  var onAdFormResetClick = function () {
+    resetAdForm();
+    window.init.deactivatePage();
+  };
+
   // При изменении инпута с фотографией жилья
   var onHouseUploadChange = function () {
-    window.images.loadImage(houseUpload, housePhoto);
+    window.images.load(houseUpload, housePhoto);
   };
 
   // При изменении инпута с аватаром
   var onAvatarInputChange = function () {
-    window.images.loadImage(avatarInput, avatarImage);
+    window.images.load(avatarInput, avatarImage);
   };
 
 
@@ -239,10 +257,10 @@
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     mainPin: mainPin,
     pageActive: pageActive,
-    setAdFormDisabled: setAdFormDisabled,
+    setDisabled: setDisabled,
     setAddressField: setAddressField,
-    addFormListeners: addFormListeners,
-    removeFormListeners: removeFormListeners
+    addListeners: addListeners,
+    removeListeners: removeListeners
   };
 
 })();
