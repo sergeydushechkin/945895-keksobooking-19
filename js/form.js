@@ -33,7 +33,7 @@
   var pageActive = false;
 
   // Изменяет состояние формы объявления, true - выключить, false - включить
-  var setAdFormDisabled = function (state) {
+  var setDisabled = function (state) {
     if (state) {
       adForm.classList.add('ad-form--disabled');
     } else {
@@ -128,7 +128,7 @@
   };
 
   // Добавляет обработчики формы
-  var addFormListeners = function () {
+  var addListeners = function () {
     adForm.addEventListener('submit', onAdFormSubmit);
     adFormSubmit.addEventListener('click', onAdFormSubmitClick);
     adFormReset.addEventListener('click', onAdFormResetClick);
@@ -143,7 +143,7 @@
   };
 
   // Удаляет обработчики формы
-  var removeFormListeners = function () {
+  var removeListeners = function () {
     adForm.removeEventListener('submit', onAdFormSubmit);
     adFormSubmit.removeEventListener('click', onAdFormSubmitClick);
     adFormReset.removeEventListener('click', onAdFormResetClick);
@@ -257,10 +257,10 @@
     MAIN_PIN_HEIGHT: MAIN_PIN_HEIGHT,
     mainPin: mainPin,
     pageActive: pageActive,
-    setAdFormDisabled: setAdFormDisabled,
+    setDisabled: setDisabled,
     setAddressField: setAddressField,
-    addFormListeners: addFormListeners,
-    removeFormListeners: removeFormListeners
+    addListeners: addListeners,
+    removeListeners: removeListeners
   };
 
 })();

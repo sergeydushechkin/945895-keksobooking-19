@@ -74,9 +74,9 @@
 
   // Удаляет метки с карты
   var clear = function () {
-    var pins = window.map.mapNode.querySelectorAll('button[type="button"].map__pin');
+    var pins = window.map.container.querySelectorAll('button[type="button"].map__pin');
     pins.forEach(function (pin) {
-      window.map.mapNode.removeChild(pin);
+      window.map.container.removeChild(pin);
     });
   };
 

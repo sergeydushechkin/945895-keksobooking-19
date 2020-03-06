@@ -42,7 +42,7 @@
   var reloadFilteredPins = function () {
     window.map.closeCard();
     window.pins.clear();
-    window.pins.render(window.map.mapNode, window.map.filteredOffers);
+    window.pins.render(window.map.container, window.map.filteredOffers);
   };
 
   // Фильтрация типа жилья

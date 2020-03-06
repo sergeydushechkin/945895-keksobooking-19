@@ -4,10 +4,10 @@
 
   // Деактивирует страницу
   var deactivatePage = function () {
-    window.form.setAdFormDisabled(true);
-    window.form.removeFormListeners();
+    window.form.setDisabled(true);
+    window.form.removeListeners();
     window.filters.setMapFilterDisabled(true);
-    window.map.disableMap();
+    window.map.disable();
     window.map.closeCard();
     window.pins.clear();
     window.pins.resetMain();
@@ -20,9 +20,9 @@
 
   // Активирует страницу
   var activatePage = function () {
-    window.form.setAdFormDisabled(false);
-    window.form.addFormListeners();
-    window.map.enableMap();
+    window.form.setDisabled(false);
+    window.form.addListeners();
+    window.map.enable();
 
     window.form.pageActive = true;
   };

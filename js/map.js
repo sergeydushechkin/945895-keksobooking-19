@@ -12,19 +12,19 @@
   var EDIT_FIELDS = ['INPUT', 'SELECT', 'TEXTAREA'];
 
   var mapSection = document.querySelector('.map');
-  var mapNode = document.querySelector('.map__pins');
+  var container = document.querySelector('.map__pins');
   var offers = [];
   var filteredOffers = [];
 
   // Активирует карту и загружает метки
-  var enableMap = function () {
+  var enable = function () {
     window.network.load(onPinsLoadSuccess, onPinsLoadError);
     mapSection.classList.remove('map--faded');
     document.addEventListener('keydown', onEscKeydown);
   };
 
   // Отключает карту
-  var disableMap = function () {
+  var disable = function () {
     mapSection.classList.add('map--faded');
     document.removeEventListener('keydown', onEscKeydown);
   };
@@ -43,7 +43,7 @@
   var openCard = function (offer) {
     var card = window.card.make(offer);
     closeCard();
-    mapNode.insertBefore(card, mapNode.querySelector('.map__filters-container'));
+    container.insertBefore(card, container.querySelector('.map__filters-container'));
     card.addEventListener('click', onCardCloseClick);
   };
 
@@ -54,7 +54,7 @@
     window.filters.setMapFilterDisabled(false);
     window.map.offers = loadedOffers;
     window.map.filteredOffers = window.map.offers.slice();
-    window.pins.render(mapNode, window.map.offers);
+    window.pins.render(container, window.map.offers);
   };
 
   // При ошибке загрузки меток
@@ -118,11 +118,11 @@
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
-    mapNode: mapNode,
+    container: container,
     offers: offers,
     filteredOffers: filteredOffers,
-    enableMap: enableMap,
-    disableMap: disableMap,
+    enable: enable,
+    disable: disable,
     closeCard: closeCard,
     openCard: openCard,
     onMainPinMousedown: onMainPinMousedown
