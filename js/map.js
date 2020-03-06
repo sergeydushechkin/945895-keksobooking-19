@@ -12,7 +12,7 @@
   var EDIT_FIELDS = ['INPUT', 'SELECT', 'TEXTAREA'];
 
   var mapSection = document.querySelector('.map');
-  var map = document.querySelector('.map__pins');
+  var mapNode = document.querySelector('.map__pins');
   var offers = [];
   var filteredOffers = [];
 
@@ -35,15 +35,15 @@
     if (card) {
       card.removeEventListener('click', onCardCloseClick);
       card.parentElement.removeChild(card);
-      window.pins.removePinSelection();
+      window.pins.removeSelection();
     }
   };
 
   // Открытие карточки
   var openCard = function (offer) {
-    var card = window.card.makeCard(offer);
+    var card = window.card.make(offer);
     closeCard();
-    map.insertBefore(card, map.querySelector('.map__filters-container'));
+    mapNode.insertBefore(card, mapNode.querySelector('.map__filters-container'));
     card.addEventListener('click', onCardCloseClick);
   };
 
@@ -54,7 +54,7 @@
     window.filters.setMapFilterDisabled(false);
     window.map.offers = loadedOffers;
     window.map.filteredOffers = window.map.offers.slice();
-    window.pins.renderPins(map, window.map.offers);
+    window.pins.render(mapNode, window.map.offers);
   };
 
   // При ошибке загрузки меток
@@ -118,7 +118,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.map = {
-    map: map,
+    mapNode: mapNode,
     offers: offers,
     filteredOffers: filteredOffers,
     enableMap: enableMap,

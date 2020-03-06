@@ -11,13 +11,13 @@
   var MAIN_PIN_DEFAULT_TOP = '375px';
   var MAIN_PIN_DEFAULT_LEFT = '570px';
 
-  var mainPin = document.querySelector('.map__pin--main');
+  var main = document.querySelector('.map__pin--main');
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   var lastPin;
   /* -------------------------Функции------------------------- */
   // Снимает выделение с активной метки
-  var removePinSelection = function () {
+  var removeSelection = function () {
     if (lastPin) {
       lastPin.classList.remove('map__pin--active');
     }
@@ -25,7 +25,7 @@
 
   // Активация метки
   var activatePin = function (pin, data) {
-    removePinSelection();
+    removeSelection();
     window.map.openCard(data);
     lastPin = pin;
     pin.classList.add('map__pin--active');
@@ -60,7 +60,7 @@
   };
 
   // Отрисовывает метки на карте
-  var renderPins = function (container, data) {
+  var render = function (container, data) {
     var offerNum = 0;
     var pinNum = 0;
     while (pinNum < PINS_AMOUNT && offerNum < data.length) {
@@ -73,27 +73,27 @@
   };
 
   // Удаляет метки с карты
-  var clearPins = function () {
-    var pins = window.map.map.querySelectorAll('button[type="button"].map__pin');
+  var clear = function () {
+    var pins = window.map.mapNode.querySelectorAll('button[type="button"].map__pin');
     pins.forEach(function (pin) {
-      window.map.map.removeChild(pin);
+      window.map.mapNode.removeChild(pin);
     });
   };
 
   // Сбрасывает главную метку
-  var resetMainPin = function () {
-    mainPin.style.top = MAIN_PIN_DEFAULT_TOP;
-    mainPin.style.left = MAIN_PIN_DEFAULT_LEFT;
+  var resetMain = function () {
+    main.style.top = MAIN_PIN_DEFAULT_TOP;
+    main.style.left = MAIN_PIN_DEFAULT_LEFT;
   };
 
   /* -------------------------Экспорт------------------------- */
 
   window.pins = {
-    mainPin: mainPin,
-    removePinSelection: removePinSelection,
-    renderPins: renderPins,
-    clearPins: clearPins,
-    resetMainPin: resetMainPin
+    main: main,
+    removeSelection: removeSelection,
+    render: render,
+    clear: clear,
+    resetMain: resetMain
   };
 
 })();

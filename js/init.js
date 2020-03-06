@@ -9,13 +9,13 @@
     window.filters.setMapFilterDisabled(true);
     window.map.disableMap();
     window.map.closeCard();
-    window.pins.clearPins();
-    window.pins.resetMainPin();
-    window.form.setAddressField();
+    window.pins.clear();
+    window.pins.resetMain();
     window.filters.mapFilterForm.reset();
     window.map.offers = [];
 
     window.form.pageActive = false;
+    window.form.setAddressField();
   };
 
   // Активирует страницу
@@ -38,13 +38,13 @@
 
   deactivatePage();
 
-  window.pins.mainPin.addEventListener('keydown', function (evt) {
+  window.pins.main.addEventListener('keydown', function (evt) {
     if (evt.key === window.util.KeyCodes.ENTER_KEY && !window.form.pageActive) {
       activatePage();
     }
   });
 
-  window.pins.mainPin.addEventListener('mousedown', function (evt) {
+  window.pins.main.addEventListener('mousedown', function (evt) {
     if (evt.button === 0) {
       if (!window.form.pageActive) {
         activatePage();

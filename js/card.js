@@ -41,7 +41,7 @@
   };
 
   // Создает карточку объявления
-  var makeCard = function (cardData) {
+  var make = function (cardData) {
     var card = mapCardTemplate.cloneNode(true);
     var housingTypesMap = {flat: 'Квартира', bungalo: 'Бунгало', house: 'Дом', palace: 'Дворец'};
 
@@ -63,7 +63,7 @@
   /* -------------------------Экспорт------------------------- */
 
   window.card = {
-    makeCard: makeCard
+    make: make
   };
 
 })();

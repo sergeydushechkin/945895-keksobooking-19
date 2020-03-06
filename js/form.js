@@ -241,12 +241,12 @@
 
   // При изменении инпута с фотографией жилья
   var onHouseUploadChange = function () {
-    window.images.loadImage(houseUpload, housePhoto);
+    window.images.load(houseUpload, housePhoto);
   };
 
   // При изменении инпута с аватаром
   var onAvatarInputChange = function () {
-    window.images.loadImage(avatarInput, avatarImage);
+    window.images.load(avatarInput, avatarImage);
   };
 
 
