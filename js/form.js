@@ -9,6 +9,8 @@
   var TITLE_MIN_LENGTH = 30;
   var TITLE_MAX_LENGTH = 100;
 
+  var housingPricesMap = {'flat': 1000, 'bungalo': 0, 'house': 5000, 'palace': 10000};
+
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
@@ -109,7 +111,6 @@
 
   // Валидация поля типа жилья и проверка цены
   var validateType = function () {
-    var housingPricesMap = {'flat': 1000, 'bungalo': 0, 'house': 5000, 'palace': 10000};
     var minPrice = housingPricesMap[selectType.value];
     inputPrice.min = minPrice;
     inputPrice.placeholder = minPrice;
