@@ -17,8 +17,6 @@
   };
 
   var load = function (onLoad, onError) {
-    var URL_PINS = 'https://js.dump.academy/keksobooking/data';
-
     var xhr = makeXhrObject(RESPONSE_TYPE, TIMEOUT);
 
     xhr.addEventListener('load', function () {
@@ -42,8 +40,6 @@
   };
 
   var send = function (data, onLoad, onError) {
-    var URL_OFFER_SEND = 'https://js.dump.academy/keksobooking';
-
     var xhr = makeXhrObject(RESPONSE_TYPE, TIMEOUT);
 
     xhr.addEventListener('load', function () {

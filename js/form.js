@@ -6,6 +6,9 @@
   var MAIN_PIN_WIDTH = 64;
   var MAIN_PIN_HEIGHT = 80;
 
+  var TITLE_MIN_LENGTH = 30;
+  var TITLE_MAX_LENGTH = 100;
+
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
@@ -82,10 +85,10 @@
   // Валидация поля заголовка
   var validateTitle = function () {
     var validityMessage = '';
-    if (inputTitle.value.length < 30) {
-      validityMessage = 'Заголовок должен содержать не менее 30 символов';
-    } else if (inputTitle.value.length > 100) {
-      validityMessage = 'Заголовок должен содержать не более  100 символов';
+    if (inputTitle.value.length < TITLE_MIN_LENGTH) {
+      validityMessage = 'Заголовок должен содержать не менее ' + TITLE_MIN_LENGTH + ' символов';
+    } else if (inputTitle.value.length > TITLE_MAX_LENGTH) {
+      validityMessage = 'Заголовок должен содержать не более  ' + TITLE_MAX_LENGTH + ' символов';
     }
     setValidity(inputTitle, validityMessage);
   };
@@ -94,34 +97,20 @@
   var validatePrice = function () {
     var validityMessage = '';
     var minPrice = parseInt(inputPrice.min, 10);
+    var maxPrice = parseInt(inputPrice.max, 10);
 
     if (inputPrice.value < minPrice) {
       validityMessage = 'Цена за ночь не может быть меньше чем ' + minPrice;
-    } else if (inputPrice.value > 1000000) {
-      validityMessage = 'Цена за ночь не может быть больше чем 1000000';
+    } else if (inputPrice.value > maxPrice) {
+      validityMessage = 'Цена за ночь не может быть больше чем ' + maxPrice;
     }
     setValidity(inputPrice, validityMessage);
   };
 
   // Валидация поля типа жилья и проверка цены
   var validateType = function () {
-    var minPrice = 0;
-    switch (selectType.value) {
-      case ('bungalo'):
-        minPrice = 0;
-        break;
-      case ('flat'):
-        minPrice = 1000;
-        break;
-      case ('house'):
-        minPrice = 5000;
-        break;
-      case ('palace'):
-        minPrice = 10000;
-        break;
-      default:
-        throw new Error('Поле тип жилья содержит неизвестное значение');
-    }
+    var housingPricesMap = {'flat': 1000, 'bungalo': 0, 'house': 5000, 'palace': 10000};
+    var minPrice = housingPricesMap[selectType.value];
     inputPrice.min = minPrice;
     inputPrice.placeholder = minPrice;
     validatePrice();
