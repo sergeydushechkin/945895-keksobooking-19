@@ -6,6 +6,8 @@
     ENTER_KEY: 'Enter'
   };
 
+  var MESSAGE_TIMEOUT = 2000;
+
   // Переключить состояние набору элементов
   var setElementsState = function (elements, state) {
     Array.from(elements).forEach(function (element) {
@@ -29,7 +31,7 @@
 
     setTimeout(function () {
       node.parentElement.removeChild(node);
-    }, 2000);
+    }, MESSAGE_TIMEOUT);
   };
 
   /* -------------------------Экспорт------------------------- */
