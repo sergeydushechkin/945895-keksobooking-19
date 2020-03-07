@@ -6,6 +6,9 @@
   var TIMEOUT = 10000;
   var RESPONSE_TYPE = 'json';
 
+  var URL_PINS = 'https://js.dump.academy/keksobooking/data';
+  var URL_OFFER_SEND = 'https://js.dump.academy/keksobooking';
+
   var makeXhrObject = function (type, timeout) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = type;
